@@ -10,8 +10,10 @@
 <script id="shader-fs" type="x-shader/x-fragment">
 precision mediump float;
 
+uniform vec4 uni_Color;
+
 void main(void) {
-	gl_FragColor = vec4(1.0, 0.0, 0.5, 1.0);
+	gl_FragColor = uni_Color;
 }
 </script>
 

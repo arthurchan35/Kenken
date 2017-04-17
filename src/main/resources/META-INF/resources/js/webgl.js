@@ -1,10 +1,9 @@
 var canvas;
 var gl;
-var squareVerticesBuffer;
-var mvMatrix;
-var shaderProgram;
 var vertexPositionAttribute;
-var perspectiveMatrix;
+var colorUniformLocation;
+
+
 
 // Loads a shader program by scouring the current document,
 // looking for a script with the specified ID.
@@ -108,6 +107,33 @@ function initShaders() {
 
 	vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "test_Position");
 	gl.enableVertexAttribArray(vertexPositionAttribute);
+	
+	colorUniformLocation = gl.getUniformLocation(shaderProgram, "uni_Color");
+}
+
+function setRandomRectangle() {
+	
+	var x = Math.random();
+	var y = Math.random();
+	var w = Math.random();
+	var h = Math.random();
+	
+	var r = Math.random();
+	var g = Math.random();
+	var b = Math.random();
+	
+	var vertices =	[	x - 1,		y - 1,		0.0,
+						x + w - 1,	y - 1,		0.0,
+						x - 1,		y + h - 1,	0.0,
+						x - 1,		y + h - 1,	0.0,
+						x + w - 1,	y - 1,		0.0,
+						x + w - 1,	y + h - 1,	0.0
+					];
+	
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+	    // Set a random color.
+	gl.uniform4f(colorUniformLocation, r, g, b, 1);
 }
 
 // Initialize the buffers we'll need. For this demo, we just have
@@ -116,16 +142,16 @@ function initBuffers() {
 
 	// Create a buffer for the square's vertices.
 
-	squareVerticesBuffer = gl.createBuffer();
+	var verticesBuffer = gl.createBuffer();
 
 	// Select the squareVerticesBuffer as the one to apply vertex
 	// operations to from here out.
 
-	gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
+	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
 
 	// Now create an array of vertices for the square. Note that the Z
 	// coordinate is always 0 here.
-
+/*
 	var vertices = [ 1.0,  1.0,  0.0,
 					 0.0,  1.0,  0.0,
 					 1.0,  0.0,  0.0,
@@ -139,8 +165,10 @@ function initBuffers() {
 	// Now pass the list of vertices into WebGL to build the shape. We
 	// do this by creating a Float32Array from the JavaScript array,
 	// then use it to fill the current vertex buffer.
-
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	
+		
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+*/
 }
 
 //Draw the scene.
@@ -149,9 +177,7 @@ function drawScene() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-	
-	gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
-	
+		
 	//3 components per iteration, type is gl.FLOAT, set normalize to false, 
 	//stride = 0 meaning move forward size * sizeof(type) to get next postion
 	//offset = 0 meaning start at the 0 index of array
@@ -161,33 +187,10 @@ function drawScene() {
 	//is bound to positionBuffer. That means we're free to bind something else 
 	//to the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
 	
-	gl.drawArrays(gl.TRIANGLES, 0, 9);
-	/*
-	// Establish the perspective with which we want to view the
-	// scene. Our field of view is 45 degrees, with a width/height
-	// ratio of 640:480, and we only want to see objects between 0.1 units
-	// and 100 units away from the camera.
-
-	perspectiveMatrix = makePerspective(60, 1280.0/720.0, 0.1, 100.0);
-
-	// Set the drawing position to the "identity" point, which is
-	// the center of the scene.
-
-	loadIdentity();
-
-	// Now move the drawing position a bit to where we want to start
-	// drawing the square.
-
-	mvTranslate([-0.0, 0.0, -6.0]);
-
-	// Draw the square by binding the array buffer to the square's vertices
-	// array, setting attributes, and pushing it to GL.
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
-	gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-	setMatrixUniforms();
-	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-	*/
+	for (var ii = 0; ii < 50; ++ii) {
+		setRandomRectangle();
+		gl.drawArrays(gl.TRIANGLES, 0, 6);
+	}
 }
 
 // Called when the canvas is created to get the ball rolling.
@@ -207,29 +210,5 @@ function start() {
 	initBuffers();
 
 	// Set up to draw the scene periodically.
-	setInterval(drawScene, 15);
+	setInterval(drawScene, 500);
 }
-
-// Matrix utility functions
-
-/*
-function loadIdentity() {
-	mvMatrix = Matrix.I(4);
-}
-
-function multMatrix(m) {
-	mvMatrix = mvMatrix.x(m);
-}
-
-function mvTranslate(v) {
-	multMatrix(Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4());
-}
-
-function setMatrixUniforms() {
-	var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-	gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
-
-	var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-	gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()));
-}
-*/
