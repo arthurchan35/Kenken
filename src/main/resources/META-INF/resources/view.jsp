@@ -10,18 +10,18 @@
 <script id="shader-fs" type="x-shader/x-fragment">
 precision mediump float;
 
-uniform vec4 uni_Color;
+uniform vec4 color_attrib_loc;
 varying vec4 vry_Color;
 void main(void) {
-	gl_FragColor = vry_Color;
+	gl_FragColor = color_attrib_loc;
 }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
-attribute vec4 test_Position;
+attribute vec4 vertex_attrib_loc;
 varying vec4 vry_Color;
 void main(void) {
-	gl_Position = test_Position;
+	gl_Position = vertex_attrib_loc;
 	vry_Color = gl_Position * 0.5 + 0.5;
 }
 </script>
