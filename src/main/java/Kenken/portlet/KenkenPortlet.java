@@ -15,6 +15,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.header-portlet-css=/css/webgl.css",
+		"com.liferay.portlet.header-portlet-javascript=/js/uiUtils.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/webgl.js",
 		"javax.portlet.display-name=Kenken Portlet",
 		"javax.portlet.init-param.template-path=/",

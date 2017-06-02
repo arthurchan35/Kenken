@@ -4,6 +4,8 @@ var verticesBuffer;
 var vertexAttribLocation;
 var colorUniformLocation;
 
+var translation = [0, 0, 0];
+
 /**
  * Creates and compiles a shader.
  *
@@ -120,12 +122,39 @@ function createWebGL(canvas) {
 	return gl;
 }
 
+function translate(index) {
+	return function(event, ui) {
+		translation[index] = ui.value;
+		drawScene();
+	}
+}
+
 function createRandomRectangle() {
 	
 	var x = Math.random();
 	var y = Math.random();
 	var w = Math.random();
 	var h = Math.random();
+	
+	var r = Math.random();
+	var g = Math.random();
+	var b = Math.random();
+	
+	var vertices =	[	x - 1,		y - 1,		0.0,
+						x + w - 1,	y - 1,		0.0,
+						x - 1,		y + h - 1,	0.0,
+						x - 1,		y + h - 1,	0.0,
+						x + w - 1,	y - 1,		0.0,
+						x + w - 1,	y + h - 1,	0.0
+					];
+	
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+	    // Set a random color.
+	gl.uniform4f(colorUniformLocation, r, g, b, 1);
+}
+
+function createRectangle(x, y, w, h) {
 	
 	var r = Math.random();
 	var g = Math.random();
@@ -169,18 +198,28 @@ function drawScene() {
 	//the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
-	for (var ii = 0; ii < 50; ++ii) {
-		createRandomRectangle();
+	//for (var ii = 0; ii < 50; ++ii) {
+		createRectangle(translation[0], translation[1], 0.5, 0.3);
+		//createRandomRectangle();
+
 		//draw type is triangle
 		//offset = 0, starting from the first entry
 		//count = 6, every 6 points compose a rectantle
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
+	//}
+}
+
+function updatePosition(index) {
+	return function(event, ui) {
+		translation[index] = ui.value / 1000;
+		drawScene();
 	}
 }
 
 // Called when the canvas is created to get the ball rolling.
 // Figuratively, that is. There's nothing moving in this demo.
 function start() {
+		
 	var canvas = document.getElementById("glcanvas");
 
 	gl = createWebGL(canvas);
@@ -193,6 +232,13 @@ function start() {
 	
 	verticesBuffer = gl.createBuffer();
 	
-		// Set up to draw the scene periodically.
-	setInterval(drawScene, 500);
+	drawScene();
+	
+	require(
+		['uiUtils'], 
+		function(uiUtils) {
+			uiUtils.setupSlider("#x", {slide: updatePosition(0), max: 500});
+			uiUtils.setupSlider("#y", {slide: updatePosition(1), max: 100});
+		}
+	);
 }

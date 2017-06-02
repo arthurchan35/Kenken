@@ -5,6 +5,12 @@
 	<canvas id="glcanvas" width="1152" height="648">
 		Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
 	</canvas>
+	<div id="uiContainer">
+		<div id="ui">
+			<div id="x"></div>
+			<div id="y"></div>
+		</div>
+	</div>
 </body>
 
 <script id="shader-fs" type="x-shader/x-fragment">
