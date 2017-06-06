@@ -129,51 +129,6 @@ function translate(index) {
 	}
 }
 
-function createRandomRectangle() {
-	
-	var x = Math.random();
-	var y = Math.random();
-	var w = Math.random();
-	var h = Math.random();
-	
-	var r = Math.random();
-	var g = Math.random();
-	var b = Math.random();
-	
-	var vertices =	[	x - 1,		y - 1,		0.0,
-						x + w - 1,	y - 1,		0.0,
-						x - 1,		y + h - 1,	0.0,
-						x - 1,		y + h - 1,	0.0,
-						x + w - 1,	y - 1,		0.0,
-						x + w - 1,	y + h - 1,	0.0
-					];
-	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-	    // Set a random color.
-	gl.uniform4f(colorUniformLocation, r, g, b, 1);
-}
-
-function createRectangle(x, y, w, h) {
-	
-	var r = Math.random();
-	var g = Math.random();
-	var b = Math.random();
-	
-	var vertices =	[	x - 1,		y - 1,		0.0,
-						x + w - 1,	y - 1,		0.0,
-						x - 1,		y + h - 1,	0.0,
-						x - 1,		y + h - 1,	0.0,
-						x + w - 1,	y - 1,		0.0,
-						x + w - 1,	y + h - 1,	0.0
-					];
-	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
-	    // Set a random color.
-	gl.uniform4f(colorUniformLocation, r, g, b, 1);
-}
-
 //Draw the scene.
 function drawScene() {
 	// Clear the canvas before we start drawing on it.
@@ -198,15 +153,12 @@ function drawScene() {
 	//the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
-	//for (var ii = 0; ii < 50; ++ii) {
-		createRectangle(translation[0], translation[1], 0.5, 0.3);
-		//createRandomRectangle();
+	createRectangle(translation[0], translation[1], 0.5, 0.3);
 
-		//draw type is triangle
-		//offset = 0, starting from the first entry
-		//count = 6, every 6 points compose a rectantle
-		gl.drawArrays(gl.TRIANGLES, 0, 6);
-	//}
+	//draw type is triangle
+	//offset = 0, starting from the first entry
+	//count = 6, every 6 points compose a rectantle
+	gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 
 function updatePosition(index) {
@@ -216,8 +168,7 @@ function updatePosition(index) {
 	}
 }
 
-// Called when the canvas is created to get the ball rolling.
-// Figuratively, that is. There's nothing moving in this demo.
+// Called when the canvas is created.
 function start() {
 		
 	var canvas = document.getElementById("glcanvas");
