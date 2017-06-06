@@ -120,13 +120,6 @@ function createWebGL(canvas) {
 	return gl;
 }
 
-function translate(index) {
-	return function(event, ui) {
-		translation[index] = ui.value;
-		drawScene();
-	}
-}
-
 //Draw the scene.
 function drawScene() {
 	// Clear the canvas before we start drawing on it.
@@ -157,13 +150,6 @@ function drawScene() {
 	//offset = 0, starting from the first entry
 	//count = 6, every 6 points compose a rectantle
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
-}
-
-function updatePosition(index) {
-	return function(event, ui) {
-		translation[index] = ui.value / 1000;
-		drawScene();
-	}
 }
 
 // Called when the canvas is created.
