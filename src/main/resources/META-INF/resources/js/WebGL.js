@@ -4,8 +4,6 @@ var verticesBuffer;
 var vertexAttribLocation;
 var colorUniformLocation;
 
-var translation = [0, 0, 0];
-
 /**
  * Creates and compiles a shader.
  *
@@ -186,10 +184,18 @@ function start() {
 	drawScene();
 	
 	require(
-		['uiUtils'], 
-		function(uiUtils) {
-			uiUtils.setupSlider("#x", {slide: updatePosition(0), max: 500});
-			uiUtils.setupSlider("#y", {slide: updatePosition(1), max: 100});
+		['uiElements'], 
+		function(uiElements) {
+			uiElements.setupSlider("#x", {value: translation[0], slide: updatePosition(0), max: gl.canvas.width });
+			uiElements.setupSlider("#y", {value: translation[1], slide: updatePosition(1), max: gl.canvas.height});
+			uiElements.setupSlider("#z", {value: translation[2], slide: updatePosition(2), max: gl.canvas.height});
+			uiElements.setupSlider("#angleX", {value: radToDeg(rotation[0]), slide: updateRotation(0), max: 360});
+			uiElements.setupSlider("#angleY", {value: radToDeg(rotation[1]), slide: updateRotation(1), max: 360});
+			uiElements.setupSlider("#angleZ", {value: radToDeg(rotation[2]), slide: updateRotation(2), max: 360});
+			uiElements.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: -5, max: 5, step: 0.01, precision: 2});
+			uiElements.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: -5, max: 5, step: 0.01, precision: 2});
+			uiElements.setupSlider("#scaleZ", {value: scale[2], slide: updateScale(2), min: -5, max: 5, step: 0.01, precision: 2});
+
 		}
 	);
 }

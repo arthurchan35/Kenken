@@ -2,7 +2,7 @@ Liferay.Loader.addModule(
 	{
 		dependencies: [],
 		anonymous: true,
-		name: 'uiUtils',
+		name: 'uiElements',
 		path: MODULE_PATH + '/js/UIElements.js'
 	}
 );
