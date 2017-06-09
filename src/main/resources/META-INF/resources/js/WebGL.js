@@ -144,7 +144,7 @@ function drawScene() {
 	//the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
-	createRectangle(translation[0], translation[1], 0.5, 0.3);
+	createLetterF3D(gl);
 
 	//draw type is triangle
 	//offset = 0, starting from the first entry
