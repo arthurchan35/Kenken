@@ -1,6 +1,6 @@
-  var translation = [45, 150, 0];
-  var rotation = [degToRad(40), degToRad(25), degToRad(325)];
-  var scale = [1, 1, 1];
+ var translation = [45, 150, 0];
+ var rotation = [degToRad(40), degToRad(25), degToRad(325)];
+ var scale = [1, 1, 1];
 
 function updatePosition(index) {
     return function(event, ui) {
