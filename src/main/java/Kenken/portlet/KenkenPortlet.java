@@ -17,6 +17,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.header-portlet-css=/css/webgl.css",
 		"com.liferay.portlet.header-portlet-javascript=/js/MathUtils.js",			
 		"com.liferay.portlet.header-portlet-javascript=/js/MVPMatrices.js",	
+		"com.liferay.portlet.header-portlet-javascript=/js/Colors.js",	
 		"com.liferay.portlet.header-portlet-javascript=/js/UIElements.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/UIUtils.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/Geometries.js",

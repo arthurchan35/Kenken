@@ -143,13 +143,14 @@ function drawScene() {
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
 	var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
-	
 	gl.uniformMatrix4fv(mvpUniformLocation, false, mvpMatrix);
 
+	var randomColor = generateARandomColor();
+	gl.uniform4fv(colorUniformLocation, randomColor);
 	//draw type is triangle
 	//offset = 0, starting from the first entry
-	//count = 6, every 6 points compose a rectantle
-	gl.drawArrays(gl.TRIANGLES, 0, 6);
+	//count = 96, every 6 points compose a rectangle, total 16 rectangles
+	gl.drawArrays(gl.TRIANGLES, 0, 96);
 }
 
 // Called when the canvas is created.
