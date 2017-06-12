@@ -3,7 +3,7 @@ var shaderProgram;
 var verticesBuffer;
 var vertexAttribLocation;
 var colorUniformLocation;
-
+var mvpUniformLocation;
 /**
  * Creates and compiles a shader.
  *
@@ -131,8 +131,6 @@ function drawScene() {
 	
 	gl.enableVertexAttribArray(vertexAttribLocation);
 	
-	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-	
 	//3 components per iteration
 	//type is gl.FLOAT
 	//set normalize to false 
@@ -144,7 +142,9 @@ function drawScene() {
 	//the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
-	createLetterF3D(gl);
+	var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
+	
+	gl.uniformMatrix4fv(mvpUniformLocation, false, mvpMatrix);
 
 	//draw type is triangle
 	//offset = 0, starting from the first entry
@@ -165,7 +165,13 @@ function start() {
 	
 	colorUniformLocation = gl.getUniformLocation(shaderProgram, "color_attrib_loc");
 	
+	mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
+
 	verticesBuffer = gl.createBuffer();
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
+
+	createLetterF3D(gl);
 	
 	drawScene();
 	
