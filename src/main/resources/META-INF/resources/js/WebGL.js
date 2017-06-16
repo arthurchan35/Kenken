@@ -150,7 +150,7 @@ function drawScene() {
 	//draw type is triangle
 	//offset = 0, starting from the first entry
 	//count = 96, every 6 points compose a rectangle, total 16 rectangles
-	gl.drawArrays(gl.TRIANGLES, 0, 96);
+	gl.drawArrays(gl.TRIANGLES, 0, 96 * 6);
 }
 
 // Called when the canvas is created.
@@ -172,7 +172,7 @@ function start() {
 
 	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
 
-	createLetterF3D(gl);
+	createKenkenBoard3D(gl, 4);
 	
 	drawScene();
 	
