@@ -24,10 +24,10 @@
 
 precision mediump float;
 
-uniform vec4 color_attrib_loc;
+uniform vec4 color_unif_loc;
 	
 void main(void) {
-	gl_FragColor = color_attrib_loc;
+	gl_FragColor = color_unif_loc;
 }
 
 </script>

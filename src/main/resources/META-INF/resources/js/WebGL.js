@@ -164,7 +164,7 @@ function start() {
 	
 	vertexAttribLocation = gl.getAttribLocation(shaderProgram, "vertex_attrib_loc");
 	
-	colorUniformLocation = gl.getUniformLocation(shaderProgram, "color_attrib_loc");
+	colorUniformLocation = gl.getUniformLocation(shaderProgram, "color_unif_loc");
 	
 	mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
 
