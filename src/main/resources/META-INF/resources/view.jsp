@@ -24,10 +24,10 @@
 
 precision mediump float;
 
-uniform vec4 color_unif_loc;
+varying vec4 color_vary_loc;
 	
 void main(void) {
-	gl_FragColor = color_unif_loc;
+	gl_FragColor = color_vary_loc;
 }
 
 </script>
@@ -35,10 +35,15 @@ void main(void) {
 <script id="shader-vs" type="x-shader/x-vertex">
 
 attribute vec4 vertex_attrib_loc;
+attribute vec4 color_attrib_loc;
+
 uniform mat4 mvp_matrix;
+
+varying vec4 color_vary_loc;
 	
 void main(void) {
 	gl_Position = mvp_matrix * vertex_attrib_loc;
+	color_vary_loc = color_attrib_loc;
 }
 
 </script>

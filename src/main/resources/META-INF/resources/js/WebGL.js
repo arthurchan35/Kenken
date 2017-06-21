@@ -1,9 +1,11 @@
 var gl;
 var shaderProgram;
 var verticesBuffer;
+var colorsBuffer;
 var vertexAttribLocation;
-var colorUniformLocation;
+var colorAttribLocation;
 var mvpUniformLocation;
+
 /**
  * Creates and compiles a shader.
  *
@@ -130,50 +132,45 @@ function drawScene() {
 	gl.useProgram(shaderProgram);
 	
 	gl.enableVertexAttribArray(vertexAttribLocation);
-	
-	//3 components per iteration
-	//type is gl.FLOAT
-	//set normalize to false 
-	//stride = 0 meaning move forward size * sizeof(type) to get next postion
-	//offset = 0 meaning start at the 0 index of array
-	//A hidden part of gl.vertexAttribPointer is that it binds the current
-	//ARRAY_BUFFER to the attribute. In other words now this attribute is
-	//bound to positionBuffer. That means we're free to bind something else to
-	//the ARRAY_BUFFER bind point. The attribute will continue to use positionBuffer.
+	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
 	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
+	
+	//borrow same mechinism to pass in color attribute to vertex shader
+	gl.enableVertexAttribArray(colorAttribLocation);
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+	gl.vertexAttribPointer(colorAttribLocation, 3, gl.FLOAT, false, 0, 0);
 	
 	var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
 	gl.uniformMatrix4fv(mvpUniformLocation, false, mvpMatrix);
 
-	var randomColor = generateARandomColor();
-	gl.uniform4fv(colorUniformLocation, randomColor);
 	//draw type is triangle
 	//offset = 0, starting from the first entry
-	//count = 96, every 6 points compose a rectangle, total 16 rectangles
+	//triangle count = 96 * 6, every 6 points compose a rectangle, total 96 rectangles
 	gl.drawArrays(gl.TRIANGLES, 0, 96 * 6);
 }
 
 // Called when the canvas is created.
 function start() {
-		
+
 	var canvas = document.getElementById("glcanvas");
 
 	gl = createWebGL(canvas);
 	
 	shaderProgram = createShaderProgramFromScript("shader-fs", "shader-vs");
-	
-	vertexAttribLocation = gl.getAttribLocation(shaderProgram, "vertex_attrib_loc");
-	
-	colorUniformLocation = gl.getUniformLocation(shaderProgram, "color_unif_loc");
-	
-	mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
 
 	verticesBuffer = gl.createBuffer();
-
 	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-
 	createKenkenBoard3D(gl, 4);
-	
+	vertexAttribLocation = gl.getAttribLocation(shaderProgram, "vertex_attrib_loc");
+
+	colorsBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+	var colorsForBoard = generateRandomColorsForBoard(4);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsForBoard), gl.STATIC_DRAW);
+	colorAttribLocation = gl.getAttribLocation(shaderProgram, "color_attrib_loc");	
+
+	mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
+
 	drawScene();
 	
 	require(

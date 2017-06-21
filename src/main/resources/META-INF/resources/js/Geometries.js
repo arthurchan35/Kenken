@@ -172,7 +172,7 @@ function createKenkenBoard3D(gl, size) {
 	
 	//pre-allocate array for triangle vertices
 	var totalTriangles = size * size * 6 * 2;
-	var vertices = new Array(totalTriangles * 3);
+	var vertices = new Array(totalTriangles * 3 * 3);
 	
 	var x = 0;
 	var y = 0;
