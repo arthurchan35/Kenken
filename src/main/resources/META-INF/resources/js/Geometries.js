@@ -1,4 +1,4 @@
-function createRandomRectangle2D(gl) {
+function createRandomRectangle2D() {
 	
 	var x = Math.random();
 	var y = Math.random();
@@ -13,7 +13,7 @@ function createRandomRectangle2D(gl) {
 						x + w - 1,	y + h - 1,	0.0
 					];
 	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	return vertices;
 }
 
 function createRectangle2D(gl, x, y, w, h) {
@@ -26,11 +26,10 @@ function createRectangle2D(gl, x, y, w, h) {
 						x + w - 1,	y + h - 1,	0.0
 					];
 	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
+	return vertices;
 }
 
-function createLetterF3D(gl) {
+function createLetterF3D() {
 
 	var vertices = [
 		// left column front
@@ -162,11 +161,10 @@ function createLetterF3D(gl) {
       0, 150,   0
 	];
 	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-
+	return vertices;
 }
 
-function createKenkenBoard3D(gl, size) {
+function createKenkenBoard3D(size) {
 
 	var length = 30;
 	
@@ -190,9 +188,9 @@ function createKenkenBoard3D(gl, size) {
 		x = 0;
 		z += length;
 	}
-	
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-	
+
+	return vertices;
+
 	function addCube(v, x, y, z, l, i) {
 		
 		//back face
