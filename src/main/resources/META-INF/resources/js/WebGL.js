@@ -121,7 +121,7 @@ function createWebGL(canvas) {
 function drawScene() {
 	// Clear the canvas before we start drawing on it.
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+	gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 	
 	meshes.forEach(function(mesh) {mesh.draw(gl)});
 	
@@ -141,19 +141,12 @@ function start() {
 	
 	drawScene();
 
-	require(
-			['uiElements'], 
-			function(uiElements) {
-				uiElements.setupSlider("#x", {value: translation[0], slide: updatePosition(0), max: gl.canvas.width });
-				uiElements.setupSlider("#y", {value: translation[1], slide: updatePosition(1), max: gl.canvas.height});
-				uiElements.setupSlider("#z", {value: translation[2], slide: updatePosition(2), max: gl.canvas.height});
-				uiElements.setupSlider("#angleX", {value: radToDeg(rotation[0]), slide: updateRotation(0), max: 360});
-				uiElements.setupSlider("#angleY", {value: radToDeg(rotation[1]), slide: updateRotation(1), max: 360});
-				uiElements.setupSlider("#angleZ", {value: radToDeg(rotation[2]), slide: updateRotation(2), max: 360});
-				uiElements.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: -5, max: 5, step: 0.01, precision: 2});
-				uiElements.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: -5, max: 5, step: 0.01, precision: 2});
-				uiElements.setupSlider("#scaleZ", {value: scale[2], slide: updateScale(2), min: -5, max: 5, step: 0.01, precision: 2});
-
-			}
-		);
+    canvas.addEventListener(
+    	'mousemove',
+    	function (e) {
+    		translation[0] = e.pageX;
+    		translation[1] = e.pageY;
+    		drawScene();
+    	}
+    );
 }

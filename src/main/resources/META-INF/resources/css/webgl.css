@@ -1,8 +1,7 @@
 canvas {
-	width: 1152px;
-	height: 648px;
-	border: 2px solid black;
-	background-color: black;
+	width: 100%;
+	height: 100%;
+	display: block;
 }
 video {
 	display: none;
