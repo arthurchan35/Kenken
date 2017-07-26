@@ -20,6 +20,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.header-portlet-javascript=/js/Colors.js",	
 		"com.liferay.portlet.header-portlet-javascript=/js/UIElements.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/UIUtils.js",
+		"com.liferay.portlet.header-portlet-javascript=/js/Mesh.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/Geometries.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/WebGL.js",
 		"javax.portlet.display-name=Kenken Portlet",

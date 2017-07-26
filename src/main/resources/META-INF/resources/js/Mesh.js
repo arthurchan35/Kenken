@@ -25,24 +25,23 @@ class Mesh {
 class KenkenBoardMesh extends Mesh {
 
 	constructor() {
-		super.constructor();
+		super();
 	}
 
 	initMesh(gl) {
-		
 		this.shaderProgram = createShaderProgramFromScript("shader-fs", "shader-vs");
 
 		this.positionsBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, positionsBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.positions), gl.STATIC_DRAW);
-		this.positionAttribLocation = gl.getAttribLocation(shaderProgram, "vertex_attrib_loc");
+		this.positionAttribLocation = gl.getAttribLocation(this.shaderProgram, "vertex_attrib_loc");
 
 		this.colorsBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
-		this.colorAttribLocation = gl.getAttribLocation(shaderProgram, "color_attrib_loc");	
+		this.colorAttribLocation = gl.getAttribLocation(this.shaderProgram, "color_attrib_loc");	
 
-		mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
+		this.mvpUniformLocation = gl.getUniformLocation(this.shaderProgram, "mvp_matrix");
 
 	}
 
@@ -52,14 +51,9 @@ class KenkenBoardMesh extends Mesh {
 	}
 
 	draw(gl) {
-		// Clear the canvas before we start drawing on it.
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+		gl.useProgram(this.shaderProgram);
 		
-		gl.useProgram(shaderProgram);
-		
-		gl.enableVertexAttribArray(this.vertexAttribLocation);
+		gl.enableVertexAttribArray(this.positionAttribLocation);
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
 		gl.vertexAttribPointer(this.positionAttribLocation, 3, gl.FLOAT, false, 0, 0);
 		
@@ -69,7 +63,7 @@ class KenkenBoardMesh extends Mesh {
 		gl.vertexAttribPointer(this.colorAttribLocation, 3, gl.FLOAT, false, 0, 0);
 		
 		var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
-		gl.uniformMatrix4fv(mvpUniformLocation, false, mvpMatrix);
+		gl.uniformMatrix4fv(this.mvpUniformLocation, false, mvpMatrix);
 
 		//draw type is triangle
 		//offset = 0, starting from the first entry

@@ -1,10 +1,5 @@
 var gl;
-var shaderProgram;
-var verticesBuffer;
-var colorsBuffer;
-var vertexAttribLocation;
-var colorAttribLocation;
-var mvpUniformLocation;
+var meshes;
 
 /**
  * Creates and compiles a shader.
@@ -126,66 +121,39 @@ function createWebGL(canvas) {
 function drawScene() {
 	// Clear the canvas before we start drawing on it.
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 	
-	gl.useProgram(shaderProgram);
+	meshes.forEach(function(mesh) {mesh.draw(gl)});
 	
-	gl.enableVertexAttribArray(vertexAttribLocation);
-	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-	gl.vertexAttribPointer(vertexAttribLocation, 3, gl.FLOAT, false, 0, 0);
-	
-	//borrow same mechinism to pass in color attribute to vertex shader
-	gl.enableVertexAttribArray(colorAttribLocation);
-	gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
-	gl.vertexAttribPointer(colorAttribLocation, 3, gl.FLOAT, false, 0, 0);
-	
-	var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
-	gl.uniformMatrix4fv(mvpUniformLocation, false, mvpMatrix);
-
-	//draw type is triangle
-	//offset = 0, starting from the first entry
-	//triangle count = 96 * 6, every 6 points compose a rectangle, total 96 rectangles
-	gl.drawArrays(gl.TRIANGLES, 0, 96 * 6);
 }
 
 // Called when the canvas is created.
 function start() {
-
 	var canvas = document.getElementById("glcanvas");
-
 	gl = createWebGL(canvas);
+	meshes = new Array();
 	
-	shaderProgram = createShaderProgramFromScript("shader-fs", "shader-vs");
-
-	verticesBuffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-	createKenkenBoard3D(gl, 4);
-	vertexAttribLocation = gl.getAttribLocation(shaderProgram, "vertex_attrib_loc");
-
-	colorsBuffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
-	var colorsForBoard = generateRandomColorsForBoard(4);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsForBoard), gl.STATIC_DRAW);
-	colorAttribLocation = gl.getAttribLocation(shaderProgram, "color_attrib_loc");	
-
-	mvpUniformLocation = gl.getUniformLocation(shaderProgram, "mvp_matrix");
-
+	
+	var kenkenBoard = new KenkenBoardMesh();
+	kenkenBoard.loadMesh();
+	kenkenBoard.initMesh(gl);
+	meshes.push(kenkenBoard);
+	
 	drawScene();
-	
-	require(
-		['uiElements'], 
-		function(uiElements) {
-			uiElements.setupSlider("#x", {value: translation[0], slide: updatePosition(0), max: gl.canvas.width });
-			uiElements.setupSlider("#y", {value: translation[1], slide: updatePosition(1), max: gl.canvas.height});
-			uiElements.setupSlider("#z", {value: translation[2], slide: updatePosition(2), max: gl.canvas.height});
-			uiElements.setupSlider("#angleX", {value: radToDeg(rotation[0]), slide: updateRotation(0), max: 360});
-			uiElements.setupSlider("#angleY", {value: radToDeg(rotation[1]), slide: updateRotation(1), max: 360});
-			uiElements.setupSlider("#angleZ", {value: radToDeg(rotation[2]), slide: updateRotation(2), max: 360});
-			uiElements.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: -5, max: 5, step: 0.01, precision: 2});
-			uiElements.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: -5, max: 5, step: 0.01, precision: 2});
-			uiElements.setupSlider("#scaleZ", {value: scale[2], slide: updateScale(2), min: -5, max: 5, step: 0.01, precision: 2});
 
-		}
-	);
+	require(
+			['uiElements'], 
+			function(uiElements) {
+				uiElements.setupSlider("#x", {value: translation[0], slide: updatePosition(0), max: gl.canvas.width });
+				uiElements.setupSlider("#y", {value: translation[1], slide: updatePosition(1), max: gl.canvas.height});
+				uiElements.setupSlider("#z", {value: translation[2], slide: updatePosition(2), max: gl.canvas.height});
+				uiElements.setupSlider("#angleX", {value: radToDeg(rotation[0]), slide: updateRotation(0), max: 360});
+				uiElements.setupSlider("#angleY", {value: radToDeg(rotation[1]), slide: updateRotation(1), max: 360});
+				uiElements.setupSlider("#angleZ", {value: radToDeg(rotation[2]), slide: updateRotation(2), max: 360});
+				uiElements.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: -5, max: 5, step: 0.01, precision: 2});
+				uiElements.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: -5, max: 5, step: 0.01, precision: 2});
+				uiElements.setupSlider("#scaleZ", {value: scale[2], slide: updateScale(2), min: -5, max: 5, step: 0.01, precision: 2});
+
+			}
+		);
 }
