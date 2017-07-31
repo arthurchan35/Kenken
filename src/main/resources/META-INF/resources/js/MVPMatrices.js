@@ -1,5 +1,5 @@
 function getMVPMatrix(gl, translation, rotation, scale) {
-    var matrix = projectectionMatrix.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400);
+    var matrix = projectionMatrix.projection(gl.canvas.clientWidth, gl.canvas.clientHeight, 400);
     matrix = modelMatrix.translate(matrix, translation[0], translation[1], translation[2]);
     matrix = modelMatrix.xRotate(matrix, rotation[0]);
     matrix = modelMatrix.yRotate(matrix, rotation[1]);
@@ -8,7 +8,7 @@ function getMVPMatrix(gl, translation, rotation, scale) {
     return matrix;
 }
 
-var projectectionMatrix = {
+var projectionMatrix = {
 
 	projection: function(width, height, depth) {
     // Note: This matrix flips the Y axis so 0 is at the top.
