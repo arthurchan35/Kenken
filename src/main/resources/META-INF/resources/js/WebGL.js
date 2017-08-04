@@ -122,7 +122,8 @@ function drawScene() {
 	// Clear the canvas before we start drawing on it.
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-	
+	console.log("X = " + translation[0] + ", Y = " + translation[1]);
+
 	meshes.forEach(function(mesh) {mesh.draw(gl)});
 	
 }
@@ -140,13 +141,4 @@ function start() {
 	meshes.push(kenkenBoard);
 	
 	drawScene();
-
-    canvas.addEventListener(
-    	'mousemove',
-    	function (e) {
-    		translation[0] = e.pageX;
-    		translation[1] = e.pageY;
-    		drawScene();
-    	}
-    );
 }
