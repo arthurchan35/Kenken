@@ -101,7 +101,7 @@ function createShaderProgramFromScript(vertexShaderId, fragmentShaderId) {
 // WebGL isn't available or could not be initialized.
 function createWebGL(canvas) {
 
-	var gl = canvas.getContext("webgl2");
+	var gl = canvas.getContext("webgl");
 	// If we don't have a GL context, give up now
 
 	if (!gl) {
