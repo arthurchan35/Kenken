@@ -106,15 +106,17 @@ class SquareMatrix extends Matrix {
 	constructor(m) {
 		if (m.height != m.width) {
 			throw "unable to copy a square matrix, given matrix is not a square matrix";
+			retur null;
 		}
 		super(m);
 	}
 
-	constructor(a, height, width) {
-		if (height != width) {
-			throw "unable to create a square matrix, height and width are not the same";
+	constructor(a, sideLength) {
+		if (a.length != sideLength * sideLength) {
+			throw "unable to create a square matrix, array has different size from it's side square";
+			retur null;
 		}
-		super(a, height, width);
+		super(a, sideLength, sideLength);
 	}
 
 	static identityMatrix(n) {
@@ -131,20 +133,97 @@ class SquareMatrix extends Matrix {
 		}
 		return new SquareMatrix(arr, n, n);
 	}
+
+	static scalingMatrix(v) {
+		var arr = new Array((v.length + 1) * (v.length + 1));
+		for (var i = 0; i < v.length; ++i) {
+			for (var j = 0; j < v.length; ++j) {
+				if (i == j) {
+					arr[i * (v.length + 1) + j] = v[i];
+				}
+				else {
+					arr[i * (v.length + 1) + j] = 0;
+				}
+			}
+		}
+		arr[(v.length + 1) * (v.length + 1) - 1] = 1;
+
+		return new SquareMatrix(arr, v.length + 1);
+	}
+
+	//not interested in implementing generic rotatiomMatrix, maybe in the future
+	static rotationMatrix(n, angleInRadians, v) {
+		var arr = new Array((v.length + 1) * (v.length + 1));
+		for (var i = 0; i < v.length; ++i) {
+			for (var j = 0; j < v.length; ++j) {
+				if (i == j) {
+					arr[i * (v.length + 1) + j] = v[i];
+				}
+				else {
+					arr[i * (v.length + 1) + j] = 0;
+				}
+			}
+		}
+		arr[(v.length + 1) * (v.length + 1) - 1] = 1;
+	}
+
+	static translationMatrix(v) {
+		var arr = new Array((v.length + 1) * (v.length + 1));
+		for (var i = 0; i < v.length + 1; ++i) {
+			for (var j = 0; j < v.length + 1; ++j) {
+				if (i == j) {
+					arr[i * (v.length + 1) + j] = 1;
+				}
+				else if (j == v.length) {
+					arr[i * (v.length + 1) + j] = v[i];
+				}
+				else {
+					arr[i * (v.length + 1) + j] = 0;
+				}
+			}
+		}
+		return new SquareMatrix(arr, v.length + 1);
+	}
+
 }
 
 class Mat4 extends SquareMatrix {
-	constructor(m) {
-		if (m.array.length != 16) {
-			throw "unable to copy a matrix 4, given matrix is not a matrix 4";
+	//js does not support method overloading with type.
+	//So in this case, it could be copying a matrix or create a matrix with an array
+	constructor(arg) {
+		if (arg instanceof Array) {
+			if (arg.length != 16) {
+				throw "unable to create a matrix 4, given array does not have a size of 16";
+				retur null;
+			}
+			super(arg, 4);
 		}
-		super(m);
+		else {
+			if (arg.array.length != 16) {
+				throw "unable to copy a matrix 4, given matrix is not a matrix 4";
+				retur null;
+			}
+			super(arg);
+		}
 	}
 
-	constructor(a, height, width) {
-		if (a.length != 16) {
-			throw "unable to create a matrix 4, array size is not 16";
-		}
-		super(a, height, width);
+	static rotationMatrix(angleInRadians, v) {
+		var c = Math.cos(angleInRadians);
+		var s = Math.sin(angleInRadians);
+
+		var t = 1 - c;
+		var x = v[0];
+		var y = v[1];
+		var z = v[2];
+		var tx = t * x;
+		var ty = t * y;
+
+		var arr = [
+			tx * x + c,		tx * y - s * z,	tx * z + s * y,	0,
+			tx * y + s * z,	ty * y + c,		ty * z - s * x,	0,
+			tx * z - s * y,	ty * z + s * x,	t * z * z + c,	0,
+			0,				0,				0,				1
+		];
+		return new Mat4(arr);
 	}
 }
