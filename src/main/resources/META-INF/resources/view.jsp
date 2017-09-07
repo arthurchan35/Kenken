@@ -13,7 +13,7 @@
 			<div id="angleZ"></div>
 			<div id="scaleX"></div>
 			<div id="scaleY"></div>
-			<div id="scaleZ"></div>			
+			<div id="scaleZ"></div>	
 		</div>
 	</div>
 </body>
@@ -23,7 +23,7 @@
 precision mediump float;
 
 varying vec4 color_vary_loc;
-	
+
 void main(void) {
 	gl_FragColor = color_vary_loc;
 }
@@ -38,7 +38,7 @@ attribute vec4 color_attrib_loc;
 uniform mat4 mvp_matrix;
 
 varying vec4 color_vary_loc;
-	
+
 void main(void) {
 	gl_Position = mvp_matrix * vertex_attrib_loc;
 	color_vary_loc = color_attrib_loc;

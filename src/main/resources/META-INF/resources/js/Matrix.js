@@ -125,7 +125,7 @@ class SquareMatrix extends Matrix {
 					arr[i * n + j] = 1;
 				}
 				else {
-					arr[i * n + j] = 0;					
+					arr[i * n + j] = 0;
 				}
 			}
 		}
@@ -136,7 +136,7 @@ class SquareMatrix extends Matrix {
 class Mat4 extends SquareMatrix {
 	constructor(m) {
 		if (m.array.length != 16) {
-			throw "unable to copy a matrix 4, given matrix is not a matrix matrix 4";
+			throw "unable to copy a matrix 4, given matrix is not a matrix 4";
 		}
 		super(m);
 	}
@@ -146,5 +146,5 @@ class Mat4 extends SquareMatrix {
 			throw "unable to create a matrix 4, array size is not 16";
 		}
 		super(a, height, width);
-	}	
+	}
 }

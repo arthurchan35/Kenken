@@ -39,7 +39,7 @@ class KenkenBoardMesh extends Mesh {
 		this.colorsBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
-		this.colorAttribLocation = gl.getAttribLocation(this.shaderProgram, "color_attrib_loc");	
+		this.colorAttribLocation = gl.getAttribLocation(this.shaderProgram, "color_attrib_loc");
 
 		this.mvpUniformLocation = gl.getUniformLocation(this.shaderProgram, "mvp_matrix");
 

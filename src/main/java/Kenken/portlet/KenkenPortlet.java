@@ -15,7 +15,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.instanceable=true",
 		"com.liferay.portlet.header-portlet-css=/css/webgl.css",
-		"com.liferay.portlet.header-portlet-javascript=/js/MathUtils.js",			
+		"com.liferay.portlet.header-portlet-javascript=/js/MathUtils.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/MVPMatrices.js",	
 		"com.liferay.portlet.header-portlet-javascript=/js/Colors.js",	
 		"com.liferay.portlet.header-portlet-javascript=/js/UIElements.js",

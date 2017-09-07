@@ -74,7 +74,7 @@ function createShaderProgram(vertexShader, fragmentShader) {
 	gl.linkProgram(program);
 	var success = gl.getProgramParameter(program, gl.LINK_STATUS);
 	if (success) {
-	  return program;
+		return program;
 	}
 	alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shader));
 	console.log(gl.getProgramInfoLog(program));
