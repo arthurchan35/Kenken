@@ -1,12 +1,13 @@
 class Vector extends Matrix {
-	constructor(v) {
-		super(v);
-		this.normalizedArray = v.normalizedArray.slice();
-	}
-
 	constructor(a, height, width) {
 		super(a, height, width);
 		this.normalizedArray = normalize();
+	}
+
+	static copy(v) {
+		var vec = super.copy(v);
+		vec.normalizedArray = v.normalizedArray.slice();
+		return vec;
 	}
 
 	normalize() {

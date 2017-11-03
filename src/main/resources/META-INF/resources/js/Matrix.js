@@ -1,11 +1,4 @@
 class Matrix {
-	constructor(m) {
-		this.array = m.array.slice();
-		this.h = m.h;
-		this.w = m.h;
-		this.transposition = m.transposition;
-	}
-
 	constructor(a, height, width) {
 		if (height * width != a.length) {
 			throw "unable to instantiate a matrix, the number of element is different from its height and width";
@@ -60,7 +53,7 @@ class Matrix {
 	}
 
 	multiplyScalar(s) {
-		var resultMatrix = new Matrix(this);
+		var resultMatrix = Matrix.copy(this);
 
 		for (var i = 0; i < resultMatrix.array.length; ++i) {
 			resultMatrix.array[i] *= s;
@@ -100,23 +93,30 @@ class Matrix {
 		}
 		return this.transposition;
 	}
+
+	static copy(m) {
+		var matrix = new Matrix(m.array.slice(), m.h, m.w);
+		matrix.transposition = m.transposition;
+		return matrix;
+	}
+
 }
 
 class SquareMatrix extends Matrix {
-	constructor(m) {
-		if (m.height != m.width) {
-			throw "unable to copy a square matrix, given matrix is not a square matrix";
-			retur null;
-		}
-		super(m);
-	}
-
 	constructor(a, sideLength) {
 		if (a.length != sideLength * sideLength) {
 			throw "unable to create a square matrix, array has different size from it's side square";
-			retur null;
+			return null;
 		}
 		super(a, sideLength, sideLength);
+	}
+
+	static copy(m) {
+		if (m.height != m.width) {
+			throw "unable to copy a square matrix, given matrix is not a square matrix";
+			return null;
+		}
+		return super.copy(m);
 	}
 
 	static identityMatrix(n) {
@@ -188,23 +188,20 @@ class SquareMatrix extends Matrix {
 }
 
 class Mat4 extends SquareMatrix {
-	//js does not support method overloading with type.
-	//So in this case, it could be copying a matrix or create a matrix with an array
 	constructor(arg) {
-		if (arg instanceof Array) {
-			if (arg.length != 16) {
-				throw "unable to create a matrix 4, given array does not have a size of 16";
-				retur null;
-			}
-			super(arg, 4);
+		if (arg.length != 16) {
+			throw "unable to create a matrix 4, given array does not have a size of 16";
+			return null;
 		}
-		else {
-			if (arg.array.length != 16) {
-				throw "unable to copy a matrix 4, given matrix is not a matrix 4";
-				retur null;
-			}
-			super(arg);
+		super(arg, 4);
+	}
+
+	static copy(m) {
+		if (arg.array.length != 16) {
+			throw "unable to copy a matrix 4, given matrix is not a matrix 4";
+			return null;
 		}
+		return super.copy(m);
 	}
 
 	static rotationMatrix(angleInRadians, v) {
