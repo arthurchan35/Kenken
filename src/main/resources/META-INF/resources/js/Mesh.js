@@ -1,73 +1,59 @@
 class Mesh {
-	
+
 	constructor() {
-		this.positions = null;
-		this.normals = null;
-		this.textCoords = null;
+		//an array of vertices, see Vertex class
+		this.vertices = null;
+		//used to identify which 3 vertices to form a triangle
+		//for example, indices = [0,1,2,1,2,3], meaning
+		///vertices[0],vertices[1],vertices[2] forms a triangle, vertices[1],vertices[2],vertices[3] forms another
 		this.indices = null;
-		this.textures = null;
-	}
-
-	initMesh() {	
-	}
-
-	loadMesh() {
-	}
-
-	loadMesh(modelPath) {
-	}
-
-	draw(shader) {
-	}
-
-}
-
-class KenkenBoardMesh extends Mesh {
-
-	constructor() {
-		super();
+		//vertex buffer object
+		this.vbo = null;
+		//vertex array object
+		this.vao = null;
+		//element buffer object
+		this.ebo = null;
 	}
 
 	initMesh(gl) {
-		this.shaderProgram = createShaderProgramFromScript("shader-fs", "shader-vs");
+		this.vao = gl.createVertexArray();
+		gl.bindVertexArray(this.vao);
 
-		this.positionsBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.positions), gl.STATIC_DRAW);
-		this.positionAttribLocation = gl.getAttribLocation(this.shaderProgram, "vertex_attrib_loc");
+		this.ebo = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ebo);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
 
-		this.colorsBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
-		this.colorAttribLocation = gl.getAttribLocation(this.shaderProgram, "color_attrib_loc");
+		this.vbo = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
 
-		this.mvpUniformLocation = gl.getUniformLocation(this.shaderProgram, "mvp_matrix");
+		/*
+		 * glVertexAttribPointer() reference site:
+		 * https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/vertexAttribPointer
+		 * notice that 24 means 24 bytes of each vertex, see geometries.js file
+		*/
 
+		// vertex positions
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, gl.FLOAT, false, 24, 0 * 4);
+		// vertex normals
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, gl.FLOAT, false, 24, 3 * 4);
+		// vertex texture coords
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, gl.FLOAT, false, 24, 6 * 4);
+
+		glBindVertexArray(0);
 	}
 
-	loadMesh() {
-		this.positions = createKenkenBoard3D(4);
-		this.colors = generateRandomColorsForBoard(4);
+	loadMesh(geometry) {
+		this.vertices = geometry.vertices;
+		this.indices = geometry.indices;
 	}
 
-	draw(gl) {
-		gl.useProgram(this.shaderProgram);
-		
-		gl.enableVertexAttribArray(this.positionAttribLocation);
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
-		gl.vertexAttribPointer(this.positionAttribLocation, 3, gl.FLOAT, false, 0, 0);
-		
-		//borrow same mechinism to pass in color attribute to vertex shader
-		gl.enableVertexAttribArray(this.colorAttribLocation);
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuffer);
-		gl.vertexAttribPointer(this.colorAttribLocation, 3, gl.FLOAT, false, 0, 0);
-		
-		var mvpMatrix = getMVPMatrix(gl, translation, rotation, scale);
-		gl.uniformMatrix4fv(this.mvpUniformLocation, false, mvpMatrix);
-
-		//draw type is triangle
-		//offset = 0, starting from the first entry
-		//triangle count = 96 * 6, every 6 points compose a rectangle, total 96 rectangles
-		gl.drawArrays(gl.TRIANGLES, 0, 96 * 6);
+	//load a mesh geometry from a file or some a link
+	loadMesh(meshPath) {
+		//stub for now
 	}
+
 }
