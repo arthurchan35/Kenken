@@ -1,103 +1,120 @@
-function createABox() {
-	//4 vertices per face, each vertex with x, y, z coords
+function createACube() {
+	/*
+	 * 1 cube has 6 faces
+	 * 4 vertices per face
+	 * each vertex consists of
+	 * 3 floats of position
+	 * 3 floats of normal
+	 * 2 floats of text coord
+	 */
 	var vertices = [
-		//front face
-		0,	0,	0,
-		64,	0,	0,
-		64,	64,	0,
-		0,	64,	0,
-		//left face
-		0,	0,	0,
-		0,	64,	0,
-		0,	64,	64,
-		0,	0,	64,
-		//bottom face
-		0,	0,	0,
-		64,	0,	0,
-		64,	0,	64,
-		0,	0,	64,
-		//right face
-		64,	64,	64,
-		64,	0,	64,
-		64,	0,	0,
-		64,	64,	0,
-		//top face
-		64,	64,	64,
-		0,	64,	64,
-		0,	64,	0,
-		64,	64,	0,
-		//back face
-		64,	64,	64,
-		64,	0,	64,
-		0,	0,	64,
-		0,	64,	64
-	];
 
-	//per vertex
-	var normals = [
 		//front face
+		//v01
+		0,	0,	0,		//vertex 01's position: x, y, z
+		0,	0,	-1,		//vertex 01's normal: n1, n2, n3
+		0.25,	0.5,	//vertex 01's text coord: u, v
+		//v02
+		64,	0,	0,
 		0,	0,	-1,
-		0,	0,	-1,
-		0,	0,	-1,
-		0,	0,	-1,
-		//left face
-		-1,	0,	0,
-		-1,	0,	0,
-		-1,	0,	0,
-		-1,	0,	0,
-		//bottom face
-		0,	-1,	0,
-		0,	-1,	0,
-		0,	-1,	0,
-		0,	-1,	0,
-		//right face
-		1,	0,	0,
-		1,	0,	0,
-		1,	0,	0,
-		1,	0,	0,
-		//top face
-		0,	1,	0,
-		0,	1,	0,
-		0,	1,	0,
-		0,	1,	0,
-		//back face
-		0,	0,	1,
-		0,	0,	1,
-		0,	0,	1,
-		0,	0,	1
-	];
-
-	//per vertex
-	var texCoords = [
-		//front face
-		0.25,	0.5,
 		0.5,	0,5,
+		//v03
+		64,	64,	0,
+		0,	0,	-1,
 		0.5,	0.75,
+		//v04
+		0,	64,	0,
+		0,	0,	-1,
 		0.25,	0.75,
+
 		//left face
+		//v05
+		0,	0,	0,
+		-1,	0,	0,
 		0.25,	0.5,
+		//v06
+		0,	64,	0,
+		-1,	0,	0,
 		0,		0.5,
+		//v07
+		0,	64,	64,
+		-1,	0,	0,
 		0,		0.75,
+		//v08
+		0,	0,	64,
+		-1,	0,	0,
 		0.25,	0.75,
+
 		//bottom face
+		//v09
+		0,	0,	0,
+		0,	-1,	0,
 		0.25,	0.5,
+		//v10
+		64,	0,	0,
+		0,	-1,	0,
 		0.5,	0.5,
+		//v11
+		64,	0,	64,
+		0,	-1,	0,
 		0.5,	0.25,
+		//v12
+		0,	0,	64,
+		0,	-1,	0,
 		0.25,	0.25,
+
 		//right face
+		//v13
+		64,	64,	64,
+		1,	0,	0,
 		0.75,	0.75,
+		//v14
+		64,	0,	64,
+		1,	0,	0,
 		0.75,	0.5,
+		//v15
+		64,	0,	0,
+		1,	0,	0,
 		0.5,	0.5,
+		//v16
+		64,	64,	0,
+		1,	0,	0,
 		0.5,	0.75,
+
 		//top face
+		//v17
+		64,	64,	64,
+		0,	1,	0,
 		0.75,	0.75,
+		//v18
+		0,	64,	64,
+		0,	1,	0,
 		0.25,	1.0,
+		//v19
+		0,	64,	0,
+		0,	1,	0,
 		0.25,	0.75,
+		//v20
+		64,	64,	0,
+		0,	1,	0,
 		0.5,	0.75,
+
 		//back face
+		//v21
+		64,	64,	64,
+		0,	0,	1,
 		0.5,	0.0,
+		//v22
+		64,	0,	64,
+		0,	0,	1,
 		0.5,	0.25,
+		//v23
+		0,	0,	64,
+		0,	0,	1,
 		0.25,	0.25,
+		//v24
+		0,	64,	64,
+		0,	0,	1,
 		0.25,	0.0
 	];
 
@@ -122,11 +139,9 @@ function createABox() {
 		20,	23,	22
 	];
 
-	var boxGeometry = new Array();
-	boxGeometry.push(vertices);
-	boxGeometry.push(normals);
-	boxGeometry.push(texCoords);
-	boxGeometry.push(vertexIndices);
+	var cube;
+	cube.vertices = vertices;
+	cube.vertexIndices = vertexIndices;
 
-	return boxGeometry;
+	return cube;
 }
