@@ -6,6 +6,9 @@ class Material {
 		this.colors = null;
 		//color buffer object
 		this.cbo = null;
+		this.projUniLoc = null;
+		this.viewUniLoc = null;
+		this.modelUniLoc = null;
 	}
 
 	/**
@@ -128,6 +131,12 @@ class Material {
 				gl.generateMipmap(gl.TEXTURE_2D);
 			}
 		);
+	}
+
+	setMVPUniforms(gl, m, v, p) {
+		this.projUniLoc = gl.getUniformLocation(this.shader, p);
+		this.viewUniLoc = gl.getUniformLocation(this.shader, v);
+		this.modelUniLoc = gl.getUniformLocation(this.shader, m);
 	}
 
 }
