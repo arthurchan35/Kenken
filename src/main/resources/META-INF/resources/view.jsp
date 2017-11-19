@@ -7,7 +7,7 @@
 		<div id="ui">
 			<div id="x"></div>
 			<div id="y"></div>
-		    <div id="z"></div>
+			<div id="z"></div>
 			<div id="angleX"></div>
 			<div id="angleY"></div>
 			<div id="angleZ"></div>
@@ -22,26 +22,30 @@
 
 precision mediump float;
 
-varying vec4 color_vary_loc;
+in vec4 v_color;
+out vec4 outColor;
 
 void main(void) {
-	gl_FragColor = color_vary_loc;
+	outColor = v_color;
 }
 
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
 
-attribute vec4 vertex_attrib_loc;
-attribute vec4 color_attrib_loc;
+layout(location = 0) in vec3 a_position;
+layout(location = 1) in vec3 a_normal;
+layout(location = 2) in vec2 a_texcoord;
 
-uniform mat4 mvp_matrix;
+uniform mat4 m_matrix;
+uniform mat4 v_matrix;
+uniform mat4 p_matrix;
 
-varying vec4 color_vary_loc;
+out vec4 v_color;
 
 void main(void) {
-	gl_Position = mvp_matrix * vertex_attrib_loc;
-	color_vary_loc = color_attrib_loc;
+	gl_Position = p_matrix * v_matrix * m_matrix * a_position;
+	v_color = gl_Position;
 }
 
 </script>

@@ -1,101 +1,6 @@
 var gl;
-var meshes;
-
-/**
- * Creates and compiles a shader.
- *
- * @param {!WebGLRenderingContext} gl The WebGL Context.
- * @param {string} shaderSource The GLSL source code for the shader.
- * @param {number} shaderType The type of shader, VERTEX_SHADER or
- *     FRAGMENT_SHADER.
- * @return {!WebGLShader} The shader.
- */
-function compileShader(shaderSource, shaderType) {
-	// Create the shader object
-	var shader = gl.createShader(shaderType);
- 
-	// Set the shader source code.
-	gl.shaderSource(shader, shaderSource);
- 
-	// Compile the shader
-	gl.compileShader(shader);
- 
-	// Check if it compiled
-	var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-	if (!success) {
-		throw "could not compile shader:" + gl.getShaderInfoLog(shader);
-	}
- 
-	return shader;
-}
-
-/**
- * Creates a shader from the content of a script tag.
- *
- * @param {!WebGLRenderingContext} gl The WebGL Context.
- * @param {string} scriptId The id of the script tag.
- * @param {string} opt_shaderType. The type of shader to create.
- *     If not passed in will use the type attribute from the
- *     script tag.
- * @return {!WebGLShader} A shader.
- */
-function createShaderFromScript(scriptId, opt_shaderType) {
-	// look up the script tag by id.
-	var shaderScript = document.getElementById(scriptId);
-	if (!shaderScript) {
-		throw("*** Error: unknown script element" + scriptId);
-	}
- 
-	// extract the contents of the script tag.
-	var shaderSource = shaderScript.text;
- 
-	// If we didn't pass in a type, use the 'type' from
-	// the script tag.
-	if (!opt_shaderType) {
-		if (shaderScript.type == "x-shader/x-vertex") {
-			opt_shaderType = gl.VERTEX_SHADER;
-		}
-		else if (shaderScript.type == "x-shader/x-fragment") {
-			opt_shaderType = gl.FRAGMENT_SHADER;
-		}
-		else if (!opt_shaderType) {
-			throw("*** Error: shader type not set");
-		}
-	}
- 
-	return compileShader(shaderSource, opt_shaderType);
-}
-
-//Create the shader program
-function createShaderProgram(vertexShader, fragmentShader) {
-	var program = gl.createProgram();
-	gl.attachShader(program, vertexShader);
-	gl.attachShader(program, fragmentShader);
-	gl.linkProgram(program);
-	var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-	if (success) {
-		return program;
-	}
-	alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shader));
-	console.log(gl.getProgramInfoLog(program));
-	gl.deleteProgram(program);
-}
-
-/**
- * Creates a program from 2 script tags.
- *
- * @param {!WebGLRenderingContext} gl The WebGL Context.
- * @param {string} vertexShaderId The id of the vertex shader script tag.
- * @param {string} fragmentShaderId The id of the fragment shader script tag.
- * @return {!WebGLProgram} A program
- */
-function createShaderProgramFromScript(vertexShaderId, fragmentShaderId) {
-
-	var vertexShader = createShaderFromScript(vertexShaderId, null);
-	var fragmentShader = createShaderFromScript(fragmentShaderId, null);
-
-	return createShaderProgram(vertexShader, fragmentShader);
-}
+var modelInstances;
+var camera;
 
 // Initialize WebGL, returning the GL context or null if
 // WebGL isn't available or could not be initialized.
@@ -117,29 +22,73 @@ function createWebGL(canvas) {
 	return gl;
 }
 
+drawInstance(instance) {
+	gl.useProgram(instance.modelAsset.material.shader);
+
+	gl.uniformMatrix4fv(instance.modelAsset.material.projUniLoc, false, camera.projection());
+	gl.uniformMatrix4fv(instance.modelAsset.material.viewUniLoc, false, camera.view(new Vector([0, 0, 0]), new Vector([0, 1, 0])));
+	gl.uniformMatrix4fv(instance.modelAsset.material.modelUniLoc, false, instance.modelMatrix);
+
+	gl.bindVertexArray(instance.modelAsset.mesh.vao);
+
+	gl.drawElements(instance.mode, instance.count, instance.type, instance.offset);
+}
+
 //Draw the scene.
 function drawScene() {
 	// Clear the canvas before we start drawing on it.
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 	gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-	console.log("X = " + translation[0] + ", Y = " + translation[1]);
 
-	meshes.forEach(function(mesh) {mesh.draw(gl)});
-	
+	modelInstances.forEach(
+		function(instance) {
+			drawInstance(instance);
+		}
+	);
+}
+
+function createACubeMesh() (
+	var cube_geometry = new Cube();
+	var cube_mesh = new Mesh();
+	cube_mesh.loadMesh(cube_geometry.vertices, cube_geometry.indices);
+	cube_mesh.init(gl);
+	return cube_mesh;
+)
+
+function createACubeMaterial() {
+	var cube_material = new Material();
+	cube_material.initShaderProgramFromScript(gl, "shader-fs", "shader-vs");
+	cube_material.loadTexture(gl, "../textures/cube_crate_texture01.jpg");
+	cube_setMVPUniforms(gl, "m_matrix", "v_matrix", "p_matrix");
+	return cube_material;
+}
+
+function createACubeModelAsset(mesh, material) {
+	var cube_model_asset = new ModelAsset(mesh, material, gl.TRIANGLES, 6 * 2 * 3, gl.UNSIGNED_SHORT, 0);
+	return cube_model_asset;
+}
+
+function createACubeModelInstance(asset, modelMatrix) {
+	var instance = new ModelInstance(asset, modelMatrix);
+	return instance;
 }
 
 // Called when the canvas is created.
 function start() {
 	var canvas = document.getElementById("glcanvas");
 	gl = createWebGL(canvas);
-	meshes = new Array();
-	
-	
-	var kenkenBoard = new KenkenBoardMesh();
-	kenkenBoard.loadMesh();
-	kenkenBoard.initMesh(gl);
-	meshes.push(kenkenBoard);
-	
+	modelInstances = new Array();
+	camera = new Camera(gl);
+
+	var cube_mesh = createACubeMesh();
+	var cube_material = createACubeMaterial();
+
+	var cube_model_asset = createACubeModelAsset(cube_mesh, cube_material);
+
+	//instance 1 has model space aligned with world space
+	var cube_model_instance_01 = createACubeModelInstance(cube_model_asset, SquareMatrix.identityMatrix(4));
+	modelInstances.push(cube_model_instance_01);
+
 	drawScene();
 
 	require(
