@@ -1,4 +1,4 @@
-function createACube() {
+function Cube() {
 	/*
 	 * 1 cube has 6 faces
 	 * 4 vertices per face
