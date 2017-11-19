@@ -6,7 +6,7 @@ var camera;
 // WebGL isn't available or could not be initialized.
 function createWebGL(canvas) {
 
-	var gl = canvas.getContext("webgl");
+	var gl = canvas.getContext("webgl2");
 	// If we don't have a GL context, give up now
 
 	if (!gl) {

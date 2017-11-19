@@ -18,7 +18,7 @@
 	</div>
 </body>
 
-<script id="shader-fs" type="x-shader/x-fragment">
+<script id="shader-fs" type="x-shader/x-fragment">#version 300 es
 
 precision mediump float;
 
@@ -31,9 +31,9 @@ void main(void) {
 
 </script>
 
-<script id="shader-vs" type="x-shader/x-vertex">
+<script id="shader-vs" type="x-shader/x-vertex">#version 300 es
 
-layout(location = 0) in vec3 a_position;
+layout(location = 0) in vec4 a_position;
 layout(location = 1) in vec3 a_normal;
 layout(location = 2) in vec2 a_texcoord;
 
