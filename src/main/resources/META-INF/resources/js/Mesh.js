@@ -46,9 +46,9 @@ class Mesh {
 		glBindVertexArray(0);
 	}
 
-	loadMesh(geometry) {
-		this.vertices = geometry.vertices;
-		this.indices = geometry.indices;
+	loadMesh(vertices, indices) {
+		this.vertices = vertices;
+		this.indices = indices;
 	}
 
 	//load a mesh geometry from a file or some a link
