@@ -20,7 +20,7 @@ class Vector extends Matrix {
 
 			var length = Math.sqrt(tot);
 		
-			this.normalizedArray = new Array(v.length);
+			this.normalizedArray = new Array(this.array.length);
 			// make sure we don't divide by 0.
 			if (length > 0.00001) {
 				for (var i = 0; i < this.array.length; ++i) {
