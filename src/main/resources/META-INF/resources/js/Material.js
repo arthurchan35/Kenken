@@ -19,7 +19,7 @@ class Material {
 	 * @param {number} shaderType The type of shader, VERTEX_SHADER or FRAGMENT_SHADER.
 	 * @return {!WebGLShader} The shader.
 	 */
-	compileShader(shaderSource, shaderType) {
+	compileShader(gl, shaderSource, shaderType) {
 		// Create the shader object
 		var shader = gl.createShader(shaderType);
 
@@ -46,7 +46,7 @@ class Material {
 	 * @param {string} opt_shaderType. The type of shader to create. If not passed in will use the type attribute from the script tag.
 	 * @return {!WebGLShader} A shader.
 	 */
-	createShaderFromScript(scriptId, opt_shaderType) {
+	createShaderFromScript(gl, scriptId, opt_shaderType) {
 		// look up the script tag by id.
 		var shaderScript = document.getElementById(scriptId);
 		if (!shaderScript) {
@@ -69,7 +69,7 @@ class Material {
 			}
 		}
 
-		return compileShader(shaderSource, opt_shaderType);
+		return compileShader(gl, shaderSource, opt_shaderType);
 	}
 
 	/**
@@ -82,8 +82,8 @@ class Material {
 	 */
 	initShaderProgramFromScript(gl, vertexShaderId, fragmentShaderId) {
 
-		var vertexShader = createShaderFromScript(vertexShaderId, null);
-		var fragmentShader = createShaderFromScript(fragmentShaderId, null);
+		var vertexShader = createShaderFromScript(gl, vertexShaderId, null);
+		var fragmentShader = createShaderFromScript(gl, fragmentShaderId, null);
 
 		var program = gl.createProgram();
 
