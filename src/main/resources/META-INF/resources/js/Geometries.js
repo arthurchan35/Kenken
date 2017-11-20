@@ -133,7 +133,7 @@ function Cube() {
 		12,	15,	14,
 		//top face, two triangles
 		16,	17,	18,
-		16,	19,	18，
+		16,	19,	18,
 		//back face, two triangles
 		20,	21,	22,
 		20,	23,	22

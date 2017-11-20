@@ -1,4 +1,4 @@
-function addEventListeners(var canvas) {
+function addEventListeners(canvas) {
 	canvas.addEventListener(
 		'mousemove',
 		function (e) {
