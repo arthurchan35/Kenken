@@ -51,7 +51,7 @@ function createACubeMesh() {
 	var cube_geometry = new Cube();
 	var cube_mesh = new Mesh();
 	cube_mesh.loadMesh(cube_geometry.vertices, cube_geometry.indices);
-	cube_mesh.init(gl);
+	cube_mesh.initMesh(gl);
 	return cube_mesh;
 }
 

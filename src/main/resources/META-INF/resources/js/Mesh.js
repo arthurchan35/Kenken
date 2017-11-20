@@ -20,11 +20,11 @@ class Mesh {
 		gl.bindVertexArray(this.vao);
 
 		this.ebo = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ebo);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.ebo);
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
 
 		this.vbo = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
 
 		/*
@@ -34,16 +34,16 @@ class Mesh {
 		*/
 
 		// vertex positions
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, gl.FLOAT, false, 24, 0 * 4);
+		gl.enableVertexAttribArray(0);
+		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 24, 0 * 4);
 		// vertex normals
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, gl.FLOAT, false, 24, 3 * 4);
+		gl.enableVertexAttribArray(1);
+		gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 24, 3 * 4);
 		// vertex texture coords
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, gl.FLOAT, false, 24, 6 * 4);
+		gl.enableVertexAttribArray(2);
+		gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 24, 6 * 4);
 
-		glBindVertexArray(0);
+		gl.bindVertexArray(null);
 	}
 
 	loadMesh(vertices, indices) {
