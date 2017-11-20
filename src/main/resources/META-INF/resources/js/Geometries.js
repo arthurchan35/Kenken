@@ -139,7 +139,7 @@ function Cube() {
 		20,	23,	22
 	];
 
-	var cube;
+	var cube = {};
 	cube.vertices = vertices;
 	cube.vertexIndices = vertexIndices;
 
