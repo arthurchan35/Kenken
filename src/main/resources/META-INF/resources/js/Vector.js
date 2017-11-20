@@ -1,7 +1,7 @@
 class Vector extends Matrix {
 	constructor(a) {
 		super(a, 1, a.length);
-		this.normalizedArray = normalize();
+		this.normalizedArray = this.normalize();
 	}
 
 	static copy(v) {

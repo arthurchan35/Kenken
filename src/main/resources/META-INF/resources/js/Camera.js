@@ -59,11 +59,11 @@ class Camera {
 	}
 
 	projection() {
-		return perspective();
+		return this.perspective();
 	}
 
 	view(target, up) {
-		return lookAt(target, up);
+		return this.lookAt(target, up);
 	}
 
 }
