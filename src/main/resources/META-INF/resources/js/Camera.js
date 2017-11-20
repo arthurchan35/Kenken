@@ -13,18 +13,6 @@ class Camera {
 		this.viewportAspectRatio = gl.canvas.clientWidth / gl.canvas.clientHeight;
 	}
 
-	get position() {
-		return this.position;
-	}
-
-	set position(p) {
-		if (p.array.length != 3) {
-			throw "invalid arguement, it is not an vector of size 3";
-			return;
-		}
-		this.position = p;
-	}
-
 	move(offset) {
 		this.position = this.position.add(offset);
 	}
