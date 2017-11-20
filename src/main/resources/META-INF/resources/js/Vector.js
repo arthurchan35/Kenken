@@ -1,6 +1,6 @@
 class Vector extends Matrix {
-	constructor(a, height, width) {
-		super(a, height, width);
+	constructor(a) {
+		super(a, 1, a.length);
 		this.normalizedArray = normalize();
 	}
 
@@ -12,12 +12,12 @@ class Vector extends Matrix {
 
 	normalize() {
 		if (!this.normalizedArray) {
-			//require tot number overflow check in the feture
+			//require total number overflow check in the feature
 			var tot = 0;
 			for (var i = 0; i < this.array.length; ++i) {
 				tot += this.array[i] * this.array[i];
 			}
-		
+
 			var length = Math.sqrt(tot);
 		
 			this.normalizedArray = new Array(v.length);
@@ -35,7 +35,7 @@ class Vector extends Matrix {
 		var tot = 0;
 
 		if (this.array.length == b.length || this.array.length > 0) {
-			//require tot number overflow check in the feture
+			//require total number overflow check in the feature
 			for (var i = 0; i < this.array.length; ++i) {
 				tot += this.array[i] * b[i];
 			}
@@ -46,10 +46,12 @@ class Vector extends Matrix {
 
 	//assuming three dimensions vector
 	cross(b) {
-		return [
+		var a = [
 			this.array[1] * b[2] - this.array[2] * b[1],
 			this.array[2] * b[0] - this.array[0] * b[2],
 			this.array[0] * b[1] - this.array[1] * b[0]
 		];
+
+		return new Vector(a);
 	}
 }
