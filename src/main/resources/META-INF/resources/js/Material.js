@@ -69,7 +69,7 @@ class Material {
 			}
 		}
 
-		return compileShader(gl, shaderSource, opt_shaderType);
+		return this.compileShader(gl, shaderSource, opt_shaderType);
 	}
 
 	/**
@@ -82,8 +82,8 @@ class Material {
 	 */
 	initShaderProgramFromScript(gl, vertexShaderId, fragmentShaderId) {
 
-		var vertexShader = createShaderFromScript(gl, vertexShaderId, null);
-		var fragmentShader = createShaderFromScript(gl, fragmentShaderId, null);
+		var vertexShader = this.createShaderFromScript(gl, vertexShaderId, null);
+		var fragmentShader = this.createShaderFromScript(gl, fragmentShaderId, null);
 
 		var program = gl.createProgram();
 
