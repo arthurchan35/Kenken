@@ -57,7 +57,7 @@ function createACubeMesh() {
 
 function createACubeMaterial() {
 	var cube_material = new Material();
-	cube_material.initShaderProgramFromScript(gl, "shader-fs", "shader-vs");
+	cube_material.createShaderProgram(gl, cubeVertexShaderSource, cubeFragmentShaderSource);
 	cube_material.loadTexture(gl, "../textures/cube_crate_texture01.jpg");
 	cube_setMVPUniforms(gl, "m_matrix", "v_matrix", "p_matrix");
 	return cube_material;

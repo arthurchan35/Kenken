@@ -39,51 +39,17 @@ class Material {
 	}
 
 	/**
-	 * Creates a shader from the content of a script tag.
+	 * Creates a program from 2 shader source.
 	 *
 	 * @param {!WebGLRenderingContext} gl The WebGL Context.
-	 * @param {string} scriptId The id of the script tag.
-	 * @param {string} opt_shaderType. The type of shader to create. If not passed in will use the type attribute from the script tag.
-	 * @return {!WebGLShader} A shader.
-	 */
-	createShaderFromScript(gl, scriptId, opt_shaderType) {
-		// look up the script tag by id.
-		var shaderScript = document.getElementById(scriptId);
-		if (!shaderScript) {
-			throw("*** Error: unknown script element" + scriptId);
-		}
-
-		// extract the contents of the script tag.
-		var shaderSource = shaderScript.text;
-
-		// If we didn't pass in a type, use the 'type' from the script tag.
-		if (!opt_shaderType) {
-			if (shaderScript.type == "x-shader/x-vertex") {
-				opt_shaderType = gl.VERTEX_SHADER;
-			}
-			else if (shaderScript.type == "x-shader/x-fragment") {
-				opt_shaderType = gl.FRAGMENT_SHADER;
-			}
-			else if (!opt_shaderType) {
-				throw("*** Error: shader type not set");
-			}
-		}
-
-		return this.compileShader(gl, shaderSource, opt_shaderType);
-	}
-
-	/**
-	 * Creates a program from 2 script tags.
-	 *
-	 * @param {!WebGLRenderingContext} gl The WebGL Context.
-	 * @param {string} vertexShaderId The id of the vertex shader script tag.
-	 * @param {string} fragmentShaderId The id of the fragment shader script tag.
+	 * @param {string} vertexShaderSrc The content of vertex shader source.
+	 * @param {string} fragmentShaderSrc The content of vertex shader source.
 	 * @return {!WebGLProgram} A program
 	 */
-	initShaderProgramFromScript(gl, vertexShaderId, fragmentShaderId) {
+	createShaderProgram(gl, vertexShaderSrc, fragmentShaderSrc) {
 
-		var vertexShader = this.createShaderFromScript(gl, vertexShaderId, null);
-		var fragmentShader = this.createShaderFromScript(gl, fragmentShaderId, null);
+		var vertexShader = this.compileShader(gl, vertexShaderSrc, gl.VERTEX_SHADER);
+		var fragmentShader = this.compileShader(gl, fragmentShaderSrc, gl.FRAGMENT_SHADER);
 
 		var program = gl.createProgram();
 
@@ -94,7 +60,7 @@ class Material {
 		if (success) {
 			this.shader = program;
 		}
-		alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shader));
+		alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(program));
 		console.log(gl.getProgramInfoLog(program));
 		gl.deleteProgram(program);
 	}

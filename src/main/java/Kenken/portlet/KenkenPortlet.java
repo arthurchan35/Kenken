@@ -27,6 +27,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.header-portlet-javascript=/js/UIUtils.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/Vector.js",
 		"com.liferay.portlet.header-portlet-javascript=/js/WebGL.js",
+		"com.liferay.portlet.header-portlet-javascript=/js/shaders/shaders_cube.js",
 		"javax.portlet.display-name=Kenken Portlet",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
