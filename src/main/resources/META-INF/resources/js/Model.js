@@ -20,7 +20,7 @@ class ModelInstance {
 
 	constructor(modelAsset, modelMatrix) {
 		this.modelAsset = modelAsset;
-		this.modelMatrix = odelMatrix;
+		this.modelMatrix = modelMatrix;
 	}
 
 }
