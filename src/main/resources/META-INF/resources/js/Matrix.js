@@ -213,7 +213,7 @@ class SquareMatrix extends Matrix {
 
 class Mat4 extends SquareMatrix {
 	constructor(a) {
-		if (arg.length != 16) {
+		if (a.length != 16) {
 			throw "unable to create a matrix 4, given array does not have a size of 16";
 			return null;
 		}
