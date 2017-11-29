@@ -1,7 +1,7 @@
 class Vector extends Matrix {
 	constructor(a) {
 		super(a, 1, a.length);
-		this.normalizedArray = this.normalize();
+		this.normalizedArray = null;
 	}
 
 	add(v) {
@@ -39,12 +39,13 @@ class Vector extends Matrix {
 
 			var length = Math.sqrt(tot);
 		
-			this.normalizedArray = new Array(this.array.length);
+			var a = new Array(this.array.length);
 			// make sure we don't divide by 0.
 			if (length > 0.00001) {
 				for (var i = 0; i < this.array.length; ++i) {
-					this.normalizedArray[i] = this.array[i] / length;
-				} 
+					a[i] = this.array[i] / length;
+				}
+				this.normalizedArray = new Vector(a);
 			}
 		}
 		return this.normalizedArray;
@@ -64,11 +65,11 @@ class Vector extends Matrix {
 	}
 
 	//assuming three dimensions vector
-	cross(b) {
+	cross(v) {
 		var a = [
-			this.array[1] * b[2] - this.array[2] * b[1],
-			this.array[2] * b[0] - this.array[0] * b[2],
-			this.array[0] * b[1] - this.array[1] * b[0]
+			this.array[1] * v.array[2] - this.array[2] * v.array[1],
+			this.array[2] * v.array[0] - this.array[0] * v.array[2],
+			this.array[0] * v.array[1] - this.array[1] * v.array[0]
 		];
 
 		return new Vector(a);
