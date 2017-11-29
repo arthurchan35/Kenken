@@ -4,10 +4,29 @@ class Vector extends Matrix {
 		this.normalizedArray = this.normalize();
 	}
 
-	static copy(v) {
-		var vec = super.copy(v);
-		vec.normalizedArray = v.normalizedArray.slice();
-		return vec;
+	add(v) {
+		var result = super.add(v);
+		return new Vector(result.array);
+	}
+
+	subtract(v) {
+		var result = super.subtract(v);
+		return new Vector(result.array);
+	}
+
+	multiplyScalar(s) {
+		var result = super.multiplyScalar(s);
+		return new Vector(result.array);
+	}
+
+	//row vector multiplying column vector gives a square matrix
+	multiplyMatrix(v) {
+		var result = super.multiplyMatrix(v);
+
+		if (result.w == 4) {
+			return new Mat4(result.array);
+		}
+		return new SquareMatrix(result.array, result.w);
 	}
 
 	normalize() {
@@ -54,4 +73,10 @@ class Vector extends Matrix {
 
 		return new Vector(a);
 	}
+
+	static copy(v) {
+		var copy = super.copy(v);
+		return new Vector(copy.array);
+	}
+
 }

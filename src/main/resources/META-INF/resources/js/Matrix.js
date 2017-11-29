@@ -22,8 +22,8 @@ class Matrix {
 		this.transposition = null;
 	}
 
-	add(b) {
-		if (this.h != b.h || this.w != b.w) {
+	add(m) {
+		if (this.h != m.h || this.w != m.w) {
 			throw "unable to do additon on matrices, they have different height and/or width";
 			return null;
 		}
@@ -31,14 +31,14 @@ class Matrix {
 		var sum = new Array(this.array.length);
 
 		for (var i = 0; i < sum.length; ++i) {
-			sum[i] = this.array[i] + b.array[i];
+			sum[i] = this.array[i] + m.array[i];
 		}
 
 		return new Matrix(sum, this.h, this.w);
 	}
 
-	subtract(b) {
-		if (this.h != b.h || this.w != b.w) {
+	subtract(m) {
+		if (this.h != m.h || this.w != m.w) {
 			throw "unable to do subtraction on matrices, they have different height and/or width";
 			return null;
 		}
@@ -46,7 +46,7 @@ class Matrix {
 		var diff = new Array(this.array.length);
 
 		for (var i = 0; i < diff.length; ++i) {
-			diff[i] = this.array[i] + b.array[i];
+			diff[i] = this.array[i] - m.array[i];
 		}
 
 		return new Matrix(diff, this.h, this.w);
@@ -111,12 +111,34 @@ class SquareMatrix extends Matrix {
 		super(a, sideLength, sideLength);
 	}
 
+	add(m) {
+		var result = super.add(m);
+		return new SquareMatrix(result.array, result.w);
+	}
+
+	subtract(m) {
+		var result = super.subtract(m);
+		return new SquareMatrix(result.array, result.w);
+	}
+
+	multiplyScalar(s) {
+		var result = super.multiplyScalar(s);
+		return new SquareMatrix(result.array, result.w);
+	}
+
+	multiplyMatrix(m) {
+		var result = super.multiplyMatrix(m);
+		return new SquareMatrix(result.array, result.w);
+	}
+
 	static copy(m) {
 		if (m.height != m.width) {
 			throw "unable to copy a square matrix, given matrix is not a square matrix";
 			return null;
 		}
-		return super.copy(m);
+
+		var copy = super.copy(m);
+		return new SquareMatrix(copy.array, copy.w);
 	}
 
 	static identityMatrix(n) {
@@ -131,7 +153,7 @@ class SquareMatrix extends Matrix {
 				}
 			}
 		}
-		return new SquareMatrix(arr, n, n);
+		return new SquareMatrix(arr, n);
 	}
 
 	static scalingMatrix(v) {
@@ -164,7 +186,9 @@ class SquareMatrix extends Matrix {
 				}
 			}
 		}
+
 		arr[(v.length + 1) * (v.length + 1) - 1] = 1;
+		return new SquareMatrix(arr, v.length + 1);
 	}
 
 	static translationMatrix(v) {
@@ -188,12 +212,32 @@ class SquareMatrix extends Matrix {
 }
 
 class Mat4 extends SquareMatrix {
-	constructor(arg) {
+	constructor(a) {
 		if (arg.length != 16) {
 			throw "unable to create a matrix 4, given array does not have a size of 16";
 			return null;
 		}
-		super(arg, 4);
+		super(a, 4);
+	}
+
+	add(m) {
+		var result = super.add(m);
+		return new Mat4(result.array);
+	}
+
+	subtract(m) {
+		var result = super.subtract(m);
+		return new Mat4(result.array);
+	}
+
+	multiplyScalar(s) {
+		var result = super.multiplyScalar(s);
+		return new Mat4(result.array);
+	}
+
+	multiplyMatrix(m) {
+		var result = super.multiplyMatrix(m);
+		return new Mat4(result.array);
 	}
 
 	static copy(m) {
@@ -201,7 +245,19 @@ class Mat4 extends SquareMatrix {
 			throw "unable to copy a matrix 4, given matrix is not a matrix 4";
 			return null;
 		}
-		return super.copy(m);
+
+		var copy = super.copy(m);
+		return new Mat4(copy.array);
+	}
+
+	static identityMatrix() {
+		var copy = super.identityMatrix(4);
+		return new Mat4(copy.array);
+	}
+
+	static scalingMatrix(v) {
+		var copy = super.scalingMatrix(v);
+		return new Mat4(copy.array);
 	}
 
 	static rotationMatrix(angleInRadians, v) {
@@ -223,4 +279,10 @@ class Mat4 extends SquareMatrix {
 		];
 		return new Mat4(arr);
 	}
+
+	static translationMatrix(v) {
+		var copy = super.translationMatrix(v);
+		return new Mat4(copy.array);
+	}
+
 }
