@@ -38,12 +38,13 @@ class Camera {
 		var a1 = f / this.viewportAspectRatio;
 		var c3 = (this.nearPlane + this.farPlane) * rangeInv;
 		var d3 = this.nearPlane * this.farPlane * rangeInv * 2;
-		return [
+		var arr = [
 			a1,	0,	0,	0,
 			0,	f,	0,	0,
 			0,	0,	c3,	-1,
 			0,	0,	d3,	0
 		];
+		return new Mat4(arr);
 	}
 
 	projection() {

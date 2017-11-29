@@ -25,9 +25,9 @@ function createWebGL(canvas) {
 function drawInstance(instance) {
 	gl.useProgram(instance.modelAsset.material.shader);
 
-	gl.uniformMatrix4fv(instance.modelAsset.material.projUniLoc, false, camera.projection());
-	gl.uniformMatrix4fv(instance.modelAsset.material.viewUniLoc, false, camera.view(new Vector([0, 0, 0]), new Vector([0, 1, 0])));
-	gl.uniformMatrix4fv(instance.modelAsset.material.modelUniLoc, false, instance.modelMatrix);
+	gl.uniformMatrix4fv(instance.modelAsset.material.projUniLoc, false, camera.projection().array);
+	gl.uniformMatrix4fv(instance.modelAsset.material.viewUniLoc, false, camera.view(new Vector([0, 0, 0]), new Vector([0, 1, 0])).array);
+	gl.uniformMatrix4fv(instance.modelAsset.material.modelUniLoc, false, instance.modelMatrix.array);
 
 	gl.bindVertexArray(instance.modelAsset.mesh.vao);
 
