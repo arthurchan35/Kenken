@@ -59,6 +59,7 @@ class Material {
 		var success = gl.getProgramParameter(program, gl.LINK_STATUS);
 		if (success) {
 			this.shader = program;
+			return;
 		}
 		alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(program));
 		console.log(gl.getProgramInfoLog(program));
