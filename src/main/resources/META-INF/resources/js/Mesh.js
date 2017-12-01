@@ -35,13 +35,13 @@ class Mesh {
 
 		// vertex positions
 		gl.enableVertexAttribArray(0);
-		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 24, 0 * 4);
+		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 32, 0 * 4);
 		// vertex normals
 		gl.enableVertexAttribArray(1);
-		gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 24, 3 * 4);
+		gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 32, 3 * 4);
 		// vertex texture coords
 		gl.enableVertexAttribArray(2);
-		gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 24, 6 * 4);
+		gl.vertexAttribPointer(2, 2, gl.FLOAT, false, 32, 6 * 4);
 
 		gl.bindVertexArray(null);
 	}
