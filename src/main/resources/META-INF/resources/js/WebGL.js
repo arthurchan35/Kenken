@@ -31,7 +31,7 @@ function drawInstance(instance) {
 
 	gl.bindVertexArray(instance.modelAsset.mesh.vao);
 
-	gl.drawElements(instance.mode, instance.count, instance.type, instance.offset);
+	gl.drawElements(instance.modelAsset.mode, instance.modelAsset.count, instance.modelAsset.type, instance.modelAsset.offset);
 }
 
 //Draw the scene.
