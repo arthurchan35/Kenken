@@ -1,6 +1,6 @@
 var cubeVertexShaderSource = `#version 300 es
 
-	layout(location = 0) in vec4 a_position;
+	layout(location = 0) in vec3 a_position;
 	layout(location = 1) in vec3 a_normal;
 	layout(location = 2) in vec2 a_texcoord;
 
@@ -11,7 +11,7 @@ var cubeVertexShaderSource = `#version 300 es
 	out vec4 v_color;
 
 	void main(void) {
-		gl_Position = p_matrix * v_matrix * m_matrix * a_position;
+		gl_Position = p_matrix * v_matrix * m_matrix * vec4(a_position, 1.0);
 		v_color = gl_Position;
 	}`
 ;
