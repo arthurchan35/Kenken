@@ -118,7 +118,7 @@ function Cube() {
 		0.25,	0.0
 	];
 
-	var vertexIndices = [
+	var indices = [
 		//front face, two triangles
 		0,	1,	2,
 		0,	3,	2,
@@ -141,7 +141,7 @@ function Cube() {
 
 	var cube = {};
 	cube.vertices = vertices;
-	cube.vertexIndices = vertexIndices;
+	cube.indices = indices;
 
 	return cube;
 }

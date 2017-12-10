@@ -51,9 +51,4 @@ class Mesh {
 		this.indices = indices;
 	}
 
-	//load a mesh geometry from a file or some a link
-	loadMesh(meshPath) {
-		//stub for now
-	}
-
 }
