@@ -32,7 +32,7 @@ class Camera {
 	}
 
 	perspective() {
-		var f = Math.tan(Math.PI * 0.5 - 0.5 * degToRad(this.filedOfView));
+		var f = Math.tan(Math.PI * 0.5 - 0.5 * degToRad(this.fieldOfView));
 		var rangeInv = 1.0 / (this.nearPlane - this.farPlane);
 
 		var a1 = f / this.viewportAspectRatio;
