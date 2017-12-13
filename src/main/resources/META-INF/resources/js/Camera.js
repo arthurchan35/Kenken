@@ -4,7 +4,7 @@
 class Camera {
 
 	constructor(gl) {
-		this.position = new Vector([-100.0, -100.0, -100.0]);
+		this.position = new Vector([-5.0, -5.0, -5.0]);
 		this.horizontalAngle = 0.0,
 		this.verticalAngle = 0.0,
 		this.fieldOfView = 85.0,
@@ -18,15 +18,17 @@ class Camera {
 	}
 
 	lookAt(target, up) {
-		var zAxis = (this.position.subtract(target)).normalize();
-		var xAxis = up.cross(zAxis);
-		var yAxis = zAxis.cross(xAxis);
-
+		var Z = target.subtract(this.position);
+		var zDirection = Z.normalize();
+		var xDirection = up.cross(zDirection).normalize();
+		var yDirection = zDirection.cross(xDirection).normalize();
+		var	distance = Z.magnitude();
+		
 		var arr = [
-			xAxis.array[0],			xAxis.array[1],			xAxis.array[2],			0,
-			yAxis.array[0],			yAxis.array[1],			yAxis.array[2],			0,
-			zAxis.array[0],			zAxis.array[1],			zAxis.array[2],			0,
-			this.position.array[0],	this.position.array[1],	this.position.array[2],	1,
+			xDirection.array[0],	yDirection.array[0],	zDirection.array[0],	0,
+			xDirection.array[1],	yDirection.array[1],	zDirection.array[1],	0,
+			xDirection.array[2],	yDirection.array[2],	zDirection.array[2],	0,
+			0,						0,						-distance,				1
 		];
 		return new Mat4(arr);
 	}

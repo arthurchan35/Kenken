@@ -52,6 +52,14 @@ class Matrix {
 		return new Matrix(diff, this.h, this.w);
 	}
 
+	magnitude() {
+		var sum = 0;
+		for (var i = 0; i < this.array.length; ++i) {
+			sum += this.array[i] * this.array[i];
+		}
+		return Math.sqrt(sum);
+	}
+
 	multiplyScalar(s) {
 		var resultMatrix = Matrix.copy(this);
 
