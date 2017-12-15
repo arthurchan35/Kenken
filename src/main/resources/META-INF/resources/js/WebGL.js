@@ -60,7 +60,7 @@ function createACubeMesh() {
 function createACubeMaterial() {
 	var cube_material = new Material();
 	cube_material.createShaderProgram(gl, cubeVertexShaderSource, cubeFragmentShaderSource);
-	//cube_material.loadTexture(gl, "o/Kenken/textures/cube_crate_texture01.jpg");
+	cube_material.loadTexture(gl, "o/Kenken/textures/cube_crate_texture01.jpg");
 	cube_material.setMVPUniforms(gl, "m_matrix", "v_matrix", "p_matrix");
 	return cube_material;
 }
@@ -91,7 +91,8 @@ function start() {
 	var cube_model_instance_01 = createACubeModelInstance(cube_model_asset, SquareMatrix.identityMatrix(4));
 	modelInstances.push(cube_model_instance_01);
 
-	drawScene();
+	setInterval(drawScene, 200);
+	//drawScene();
 
 	require(
 		['uiElements'], 
