@@ -91,22 +91,34 @@ function start() {
 	var cube_model_instance_01 = createACubeModelInstance(cube_model_asset, SquareMatrix.identityMatrix(4));
 	modelInstances.push(cube_model_instance_01);
 
-	setInterval(drawScene, 200);
-	//drawScene();
+	setInterval(drawScene, 20);
 
-	require(
-		['uiElements'], 
-		function(uiElements) {
-			uiElements.setupSlider("#x", {value: translation[0], slide: updatePosition(0), max: gl.canvas.width });
-			uiElements.setupSlider("#y", {value: translation[1], slide: updatePosition(1), max: gl.canvas.height});
-			uiElements.setupSlider("#z", {value: translation[2], slide: updatePosition(2), max: gl.canvas.height});
-			uiElements.setupSlider("#angleX", {value: radToDeg(rotation[0]), slide: updateRotation(0), max: 360});
-			uiElements.setupSlider("#angleY", {value: radToDeg(rotation[1]), slide: updateRotation(1), max: 360});
-			uiElements.setupSlider("#angleZ", {value: radToDeg(rotation[2]), slide: updateRotation(2), max: 360});
-			uiElements.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: -5, max: 5, step: 0.01, precision: 2});
-			uiElements.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: -5, max: 5, step: 0.01, precision: 2});
-			uiElements.setupSlider("#scaleZ", {value: scale[2], slide: updateScale(2), min: -5, max: 5, step: 0.01, precision: 2});
+	window.addEventListener(
+		"keydown",
+		function (event) {
+			if (event.defaultPrevented) {
+				return; // Do nothing if the event was already processed
+			}
 
-		}
+			switch (event.key) {
+			case "ArrowDown":
+				camera.position = camera.position.subtract(new Vector([0, 0, -1]));
+				break;
+			case "ArrowUp":
+				camera.position = camera.position.subtract(new Vector([0, 0, 1]));
+				break;
+			case "ArrowLeft":
+				camera.position = camera.position.subtract(new Vector([-1, 0, 0]));
+				break;
+			case "ArrowRight":
+				camera.position = camera.position.subtract(new Vector([1, 0, 0]));
+				break;
+			default:
+				return; // Quit when this doesn't handle the key event.
+			}
+
+			event.preventDefault();
+		},
+		true
 	);
 }
