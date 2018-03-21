@@ -25,7 +25,7 @@ public class KenkenGame {
 		postProcess();
 	}
 
-	public static Boolean isValid(int i, int j, int no) {
+	public static boolean isValid(int i, int j, int no) {
 		return (rows[i][no] && cols[j][no] && blks[i / st * st + j / st][no])?
 		true : false;
 	}
