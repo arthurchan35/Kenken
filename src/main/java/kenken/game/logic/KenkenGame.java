@@ -3,7 +3,7 @@ package kenken.game.logic;
 import java.util.Arrays;
 
 public class KenkenGame {
-	static int boardSize;
+	static char[][] board;
 	static int st;
 
 	static boolean[][] rows;
@@ -18,29 +18,33 @@ public class KenkenGame {
 		if (board.length < 1 || board[0].length < 1 || board.length != board[0].length)
 			return;
 
-		preProcess(board);
+		preProcess();
 
-		helper(board, 0, 0);
+		helper(0, 0);
 
-		postProcess(board);
+		postProcess();
 	}
 
-	private static void preProcess(char[][] board) {
-		boardSize = board.length;
-		st = (int) Math.sqrt(boardSize);
+	public static Boolean isValid(int i, int j, int no) {
+		return (rows[i][no] && cols[j][no] && blks[i / st * st + j / st][no])?
+		true : false;
+	}
 
-		rows = new boolean[boardSize][boardSize];
-		cols = new boolean[boardSize][boardSize];
-		blks = new boolean[boardSize][boardSize];
+	private static void preProcess() {
+		st = (int) Math.sqrt(board.length);
 
-		for (int i = 0; i < boardSize; ++i) {
+		rows = new boolean[board.length][board.length];
+		cols = new boolean[board.length][board.length];
+		blks = new boolean[board.length][board.length];
+
+		for (int i = 0; i < board.length; ++i) {
 			Arrays.fill(rows[i], true);
 			Arrays.fill(cols[i], true);
 			Arrays.fill(blks[i], true);
 		}
 
-		for (int i = 0; i < boardSize; ++i) {
-			for (int j = 0; j < boardSize; ++j) {
+		for (int i = 0; i < board.length; ++i) {
+			for (int j = 0; j < board.length; ++j) {
 				if (board[i][j] != '.') {
 					rows[i][board[i][j] - '0' - 1] = false;
 					cols[j][board[i][j] - '0' - 1] = false;
@@ -50,18 +54,13 @@ public class KenkenGame {
 		}
 	}
 
-	private static Boolean isValid(char[][] board, int i, int j, int no) {
-		return (rows[i][no] && cols[j][no] && blks[i / st * st + j / st][no])?
-		true : false;
-	}
-
-	private static Boolean helper(char[][] board, int i, int j) {
+	private static Boolean helper(int i, int j) {
 		//base case, or IAW, last one
 		if (i == board.length - 1 && j == board[0].length - 1) {
 			//board size can not be larger than '.'
 			if (board[i][j] <= '.') {
-				for (int k = 1; k <= boardSize; ++k) {
-					if (isValid(board, i, j, k - 1)) {
+				for (int k = 1; k <= board.length; ++k) {
+					if (isValid(i, j, k - 1)) {
 						board[i][j] = (char) k;
 						return true;
 					}
@@ -72,15 +71,15 @@ public class KenkenGame {
 		}
 		//general case
 		if (board[i][j] <= '.') {
-			for (int k = 1; k <= boardSize; ++k) {
-				if (isValid(board, i, j, k - 1)) {
+			for (int k = 1; k <= board.length; ++k) {
+				if (isValid(i, j, k - 1)) {
 					rows[i][k - 1] = false;
 					cols[j][k - 1] = false;
 					blks[i / st * st + j / st][k - 1] = false;
 
-					boolean rest = (j < boardSize - 1)?
-						helper(board, i, j + 1):
-						helper(board, i + 1, 0);
+					boolean rest = (j < board.length - 1)?
+						helper(i, j + 1):
+						helper(i + 1, 0);
 
 					rows[i][k - 1] = true;
 					cols[j][k - 1] = true;
@@ -96,15 +95,15 @@ public class KenkenGame {
 			return false;
 		}
 		else {
-			return (j < boardSize - 1)?
-				helper(board, i, j + 1):
-				helper(board, i + 1, 0);
+			return (j < board.length - 1)?
+				helper(i, j + 1):
+				helper(i + 1, 0);
 		}
 	}
 
-	private static void postProcess(char[][] board) {
-		for (int i = 0; i < boardSize; ++i) {
-			for (int j = 0; j < boardSize; ++j) {
+	private static void postProcess() {
+		for (int i = 0; i < board.length; ++i) {
+			for (int j = 0; j < board.length; ++j) {
 				if (board[i][j] < '.') {
 					board[i][j] += '0';
 				}
