@@ -1,4 +1,4 @@
-package Kenken.portlet;
+package kenken.game.portlet;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
