@@ -1,7 +1,5 @@
 package kenken.game.logic;
 
-import java.util.Arrays;
-
 public class KenkenGame {
 	static char[][] board;
 
