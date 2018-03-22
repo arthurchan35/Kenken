@@ -41,14 +41,32 @@ public class KenkenGame {
 		}
 	}
 
+	private static int[] FYShuffle() {
+		int[] shuffled = new int[board.length];
+		for (int i = 0; i < board.length; ++i)
+			shuffled[i] = i + 1;
+
+		for (int i = 0; i < board.length; ++i) {
+			int ranIndex = (int) (Math.random() * (board.length - i));
+			int temp = shuffled[ranIndex];
+			shuffled[ranIndex] = shuffled[board.length - 1 - i];
+			shuffled[board.length - 1 - i] = temp;
+		}
+
+		return shuffled;
+	}
+
 	private static Boolean fillBoard(int i, int j) {
+
+		int shuffled[] = FYShuffle();
+
 		//base case, or IAW, last one
 		if (i == board.length - 1 && j == board[0].length - 1) {
 			//board size can not be larger than '.'
 			if (board[i][j] <= '.') {
 				for (int k = 1; k <= board.length; ++k) {
-					if (isValid(i, j, k - 1)) {
-						board[i][j] = (char) k;
+					if (isValid(i, j, shuffled[k - 1] - 1)) {
+						board[i][j] = (char)shuffled[k - 1];
 						return true;
 					}
 				}
@@ -59,19 +77,19 @@ public class KenkenGame {
 		//general case
 		if (board[i][j] <= '.') {
 			for (int k = 1; k <= board.length; ++k) {
-				if (isValid(i, j, k - 1)) {
-					rows[i][k - 1] = false;
-					cols[j][k - 1] = false;
+				if (isValid(i, j, shuffled[k - 1] - 1)) {
+					rows[i][shuffled[k - 1] - 1] = false;
+					cols[j][shuffled[k - 1] - 1] = false;
 
 					boolean rest = (j < board.length - 1)?
 						fillBoard(i, j + 1):
 						fillBoard(i + 1, 0);
 
-					rows[i][k - 1] = true;
-					cols[j][k - 1] = true;
+					rows[i][shuffled[k - 1] - 1] = true;
+					cols[j][shuffled[k - 1] - 1] = true;
 
 					if (rest) {
-						board[i][j] = (char)k; 
+						board[i][j] = (char)shuffled[k - 1];
 						return true;
 					}
 					else continue;
