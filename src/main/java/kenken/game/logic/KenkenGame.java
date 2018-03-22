@@ -34,15 +34,10 @@ public class KenkenGame {
 		cols = new boolean[board.length][board.length];
 
 		for (int i = 0; i < board.length; ++i) {
-			Arrays.fill(rows[i], true);
-			Arrays.fill(cols[i], true);
-		}
-
-		for (int i = 0; i < board.length; ++i) {
 			for (int j = 0; j < board.length; ++j) {
-				if (board[i][j] != '.') {
-					rows[i][board[i][j] - '0' - 1] = false;
-					cols[j][board[i][j] - '0' - 1] = false;
+				if (board[i][j] == '.') {
+					rows[i][board[i][j] - '0' - 1] = true;
+					cols[j][board[i][j] - '0' - 1] = true;
 				}
 			}
 		}
