@@ -14,7 +14,7 @@ public class Cage {
 
 	private int size;
 
-	public Cage(int[] Xs, int[] Ys, int size, char[][] board) {
+	public Cage(int[] Xs, int[] Ys, int size) {
 		cells = new HashMap<Integer, Integer>();
 
 		//magic number of 4, number of operators
@@ -24,9 +24,13 @@ public class Cage {
 			cells.put(Ys[i] * size + Xs[i], -1);
 		}
 
-		target = calculate(Xs, Ys, board);
 		this.size = size;
 		filled = 0;
+	}
+
+	public Cage(int[] Xs, int[] Ys, int size, char[][] board) {
+		this(Xs, Ys, size);
+		target = calculate(Xs, Ys, board);
 	}
 
 	public boolean fill(int i, int j, int no) {
