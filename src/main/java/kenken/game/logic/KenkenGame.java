@@ -6,9 +6,7 @@ public class KenkenGame {
 	static boolean[][] rows;
 	static boolean[][] cols;
 
-	private KenkenGame() {
-		
-	}
+	private KenkenGame() {}
 
 	public static char[][] generateBoard(int boardLength) {
 
@@ -41,16 +39,16 @@ public class KenkenGame {
 		}
 	}
 
-	private static int[] FYShuffle() {
-		int[] shuffled = new int[board.length];
-		for (int i = 0; i < board.length; ++i)
+	private static int[] FYShuffle(int length) {
+		int[] shuffled = new int[length];
+		for (int i = 0; i < length; ++i)
 			shuffled[i] = i + 1;
 
-		for (int i = 0; i < board.length; ++i) {
-			int ranIndex = (int) (Math.random() * (board.length - i));
+		for (int i = 0; i < length; ++i) {
+			int ranIndex = (int) (Math.random() * (length - i));
 			int temp = shuffled[ranIndex];
-			shuffled[ranIndex] = shuffled[board.length - 1 - i];
-			shuffled[board.length - 1 - i] = temp;
+			shuffled[ranIndex] = shuffled[length - 1 - i];
+			shuffled[length - 1 - i] = temp;
 		}
 
 		return shuffled;
@@ -58,7 +56,7 @@ public class KenkenGame {
 
 	private static Boolean fillBoard(int i, int j) {
 
-		int shuffled[] = FYShuffle();
+		int shuffled[] = FYShuffle(board.length);
 
 		//base case, or IAW, last one
 		if (i == board.length - 1 && j == board[0].length - 1) {
