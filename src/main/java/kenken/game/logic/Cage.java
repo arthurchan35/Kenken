@@ -12,31 +12,46 @@ public class Cage {
 
 	private int filled;
 
-	private int size;
+	private int boardLength;
 
-	public Cage(int[] Xs, int[] Ys, int size) {
+	public Cage(int boardLength) {
 		cells = new HashMap<Integer, Integer>();
 
 		//magic number of 4, number of operators
 		this.operator = (int) (Math.random() * 4);
 
-		for (int i = 0; i < Xs.length; ++i) {
-			cells.put(Ys[i] * size + Xs[i], -1);
-		}
+		this.boardLength = boardLength;
 
-		this.size = size;
 		filled = 0;
+	} 
+
+	public Cage(int[] Xs, int[] Ys, int boardLength) {
+		this(boardLength);
+
+		for (int i = 0; i < Xs.length; ++i) {
+			cells.put(Ys[i] * boardLength + Xs[i], -1);
+		}
 	}
 
-	public Cage(int[] Xs, int[] Ys, int size, char[][] board) {
-		this(Xs, Ys, size);
+	public Cage(int[] Xs, int[] Ys, int boardLength, char[][] board) {
+		this(Xs, Ys, boardLength);
 		target = calculate(Xs, Ys, board);
 	}
 
-	public boolean fill(int i, int j, int no) {
+	/*
+	 * Used to fill one cell in this cage at init time
+	 * */
+	public void fillInitValue(int i, int j) {
+		cells.put(j * boardLength + i, -1);
+	}
+
+	/*
+	 * Used to validate player input
+	 * */
+	public boolean validateAndFill(int i, int j, int no) {
 		boolean valid = isValid(i, j, no);
 		if (valid) {
-			cells.put(j * size + i, no);
+			cells.put(j * boardLength + i, no);
 			filled += 1;
 		}
 		return valid;
@@ -82,13 +97,13 @@ public class Cage {
 	private double addition(int i, int j, int no) {
 		int sum = 0;
 
-		int temp = cells.get(j * size + i);
-		cells.put(j * size + i, no);
+		int temp = cells.get(j * boardLength + i);
+		cells.put(j * boardLength + i, no);
 
 		for (Map.Entry<Integer, Integer> entry: cells.entrySet())
 			sum += entry.getValue();
 
-		cells.put(j * size + i, temp);
+		cells.put(j * boardLength + i, temp);
 
 		return sum;
 	}
@@ -106,8 +121,8 @@ public class Cage {
 		int biggest = 0;
 		int sub = 0;
 
-		int temp = cells.get(j * size + i);
-		cells.put(j * size + i, no);
+		int temp = cells.get(j * boardLength + i);
+		cells.put(j * boardLength + i, no);
 
 		for (Map.Entry<Integer, Integer> entry: cells.entrySet()) {
 			biggest = (entry.getValue() > biggest) ?
@@ -117,7 +132,7 @@ public class Cage {
 		}
 
 		sub += biggest * 2;
-		cells.put(j * size + i, temp);
+		cells.put(j * boardLength + i, temp);
 
 		return sub;
 	}
@@ -147,13 +162,13 @@ public class Cage {
 	private double multiplication(int i, int j, int no) {
 		int product = 1;
 
-		int temp = cells.get(j * size + i);
-		cells.put(j * size + i, no);
+		int temp = cells.get(j * boardLength + i);
+		cells.put(j * boardLength + i, no);
 
 		for (Map.Entry<Integer, Integer> entry: cells.entrySet())
 			product *= entry.getValue();
 
-		cells.put(j * size + i, temp);
+		cells.put(j * boardLength + i, temp);
 
 		return product;
 	}
@@ -171,8 +186,8 @@ public class Cage {
 		int biggest = 0;
 		double quot = 1;
 
-		int temp = cells.get(j * size + i);
-		cells.put(j * size + i, no);
+		int temp = cells.get(j * boardLength + i);
+		cells.put(j * boardLength + i, no);
 
 		for (Map.Entry<Integer, Integer> entry: cells.entrySet()) {
 			biggest = (entry.getValue() > biggest) ?
@@ -182,7 +197,7 @@ public class Cage {
 		}
 
 		quot *= biggest * biggest;
-		cells.put(j * size + i, temp);
+		cells.put(j * boardLength + i, temp);
 
 		return quot;
 	}

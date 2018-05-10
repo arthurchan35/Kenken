@@ -3,6 +3,8 @@ package kenken.game.logic;
 public class KenkenGame {
 	static char[][] board;
 
+	static Cage[][] cages;
+
 	static boolean[][] rows;
 	static boolean[][] cols;
 
@@ -17,6 +19,68 @@ public class KenkenGame {
 		fillBoard(0, 0);
 
 		postProcess();
+	}
+
+	public static void buildCages(int boardLength) {
+		char[][] temp = new char[boardLength][boardLength];
+
+		char counter = '0';
+
+		for (int i = 0; i < boardLength; ++i) {
+			for (int j = 0; j < boardLength; ++j) {
+				if (temp[i][j] == '\0') {
+					fillCage(temp, counter, i, j, 1000);
+					counter += 1;
+				}
+			}
+		}
+	}
+
+	private static int fillCage(char[][] temp, char counter, int i, int j, int decay) {
+		if (i < 0 || i >= temp.length || j < 0 || j >= temp.length) {
+			return 0;
+		}
+		if (temp[i][j] != '\0') {
+			return 0;
+		}
+
+		if (decay <= 0) {
+			return 0;
+		}
+
+		temp[i][j] = counter;
+
+		int shuffled[] = FYShuffle(4);
+
+		int decayed = (int)(Math.random() * (1000 - 1000 / temp.length) + 1000 / temp.length);
+
+		for (int k = 0; k < 4; ++k) {
+
+			if (decay < decayed) {
+				break;
+			}
+
+			switch (shuffled[k]) {
+			case 0://left cell
+				decayed += fillCage(temp, counter, i - 1, j, decay - decayed);
+				break;
+			case 1://bottom cell
+				decayed += fillCage(temp, counter, i, j + 1, decay - decayed);
+				break;
+			case 2://right cell
+				decayed += fillCage(temp, counter, i + 1, j, decay - decayed);
+				break;
+			case 3://top cell
+				decayed += fillCage(temp, counter, i, j - 1, decay - decayed);
+				break;
+			default:
+				break;
+			}
+
+		}
+
+		return decayed;
+
 	}
 
 	public static boolean isValid(int i, int j, int no) {
